@@ -46,9 +46,10 @@ jobs:
 
     - name: Obter o nome do pacote
       id: capture-package
+      shell: powershell
       run: |
-        echo "PACKAGE_NAME=$(ls ./output/*.nupkg)" >> $GITHUB_ENV
-        echo "$GITHUB_ENV"
+        $package = Get-ChildItem -Path ./output -Filter *.nupkg | Select-Object -First 1
+        echo "PACKAGE_NAME=$($package.FullName)" >> $env:GITHUB_ENV
 
     - name: Enviar para nuget.org
       run: dotnet nuget push "$PACKAGE_NAME" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
