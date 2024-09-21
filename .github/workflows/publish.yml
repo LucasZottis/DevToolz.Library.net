@@ -52,6 +52,6 @@ jobs:
         echo "PACKAGE_NAME=$($package.FullName)" >> $env:GITHUB_ENV
 
     - name: Enviar para nuget.org
-      run: dotnet nuget push "$PACKAGE_NAME" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push $env:PACKAGE_NAME --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
       env:
         PACKAGE_NAME: ${{ env.PACKAGE_NAME }}
