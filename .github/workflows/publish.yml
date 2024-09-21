@@ -50,7 +50,5 @@ jobs:
     - name: Empacotar
       run: dotnet pack ./DevToolz.Library/DevToolz.Library.csproj -c Release -o ./output
 
-    - name: Enviar para Nuget.org
-      env:
-          NUGET_KEY: ${{ secrets.NUGET_KEY }}
-      run: dotnet nuget push "./output/*.nupkg" -k ${NUGET_KEY} -s https://api.nuget.org/v3/index.json
+    - name: Enviar para nuget.org
+      run: dotnet nuget push ./output/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
