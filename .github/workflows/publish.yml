@@ -22,13 +22,10 @@ jobs:
       with:
         dotnet-version: 8.x
 
-    - name: Resturar dependências
-      run: dotnet restore
-
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-      
-  build:
+      run: dotnet test ./DevToolz.Library.Test/DevToolz.Library.Test.csproj --no-build --verbosity normal
+
+  publish:
     runs-on: windows-latest
     needs: test
 
@@ -40,9 +37,9 @@ jobs:
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x
-        
-    - name: Resturar dependências
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --no-restore
+
+    - name: Empacotar
+      run: dotnet pack ./DevToolz.Library/DevToolz.Library.csproj -c Release -o ./output --no-build
+
+    - name: Enviar para Nuget.org
+      run: dotnet nuget push ./output/*.nupkg -k $NUGET_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols --no-dependencies --no-restore
