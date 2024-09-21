@@ -1,9 +1,4 @@
-﻿using DevToolz.Library.Extensions;
-using DevToolz.Library.Interfaces;
-using DevToolz.Library.Structs;
-using System.Text.RegularExpressions;
-
-namespace DevToolz.Library;
+﻿namespace DevToolz.Library;
 
 public class Cnpj : INumber, IValidator, IGenerator
 {
@@ -46,53 +41,27 @@ public class Cnpj : INumber, IValidator, IGenerator
         return digits;
     }
 
-    private string GenerateFirstVerifyingDigit( string digits )
+    private string GenerateVerifyingDigits( int startCounter, string digits )
     {
-        var resultado = 0;
-        var contador = 5;
-        int resto;
+        var result = 0;
 
         foreach ( char digito in digits )
         {
-            resultado += digito.ToInt() * contador;
-            contador--;
-            if ( contador < 2 )
-                contador = 9;
+            result += digito.ToByte() * startCounter;
+            startCounter--;
+
+            if ( startCounter < 2 )
+                startCounter = 9;
         }
 
-        resto = resultado % 11;
+        var rest = result % 11;
 
-        if ( resto < 2 )
-            resultado = 0;
+        if ( rest < 2 )
+            result = 0;
         else
-            resultado = 11 - resto;
+            result = 11 - rest;
 
-        return resultado.ToString();
-    }
-
-    private string GenerateSecondVerifyingDigit( string digits )
-    {
-        int resultado = 0;
-        int contador = 6;
-        int resto;
-
-        foreach ( char digito in digits )
-        {
-            resultado += digito.ToInt() * contador;
-            contador--;
-
-            if ( contador < 2 )
-                contador = 9;
-        }
-
-        resto = resultado % 11;
-
-        if ( resto < 2 )
-            resultado = 0;
-        else
-            resultado = 11 - resto;
-
-        return resultado.ToString();
+        return result.ToString();
     }
 
     private string GetCalculatingDigits( string value )
@@ -104,78 +73,52 @@ public class Cnpj : INumber, IValidator, IGenerator
     private string GetSecondVerifyingDigit( string cnpj )
         => cnpj[ 13 ].ToString();
 
-    private bool ValidateVerifyingDigit( int startConuter, string digits, string verifyingDigit )
+    private bool ValidateVerifyingDigit( int startCounter, string digits, string verifyingDigit )
     {
-        var result = 0;
-
-        foreach ( char digito in digits )
-        {
-            result += digito.ToByte() * startConuter;
-            startConuter--;
-
-            if ( startConuter < 2 )
-                startConuter = 9;
-        }
-
-        var rest = result % 11;
-
-        if ( rest < 2 )
-            result = 0;
-        else
-            result = 11 - rest;
-
-        return result.IsEqual( verifyingDigit.ToInt() );
+        var checkDigit = GenerateVerifyingDigits( startCounter, digits );
+        return checkDigit.IsEqual( verifyingDigit );
     }
-
-    private bool ValidateFirstVerifyingDigit( string digits, string firstVerifyingDigit )
-        => ValidateVerifyingDigit( 5, digits, firstVerifyingDigit );
-
-    private bool ValidateSecondVerifyingDigit( string digits, string secondVerifyingDigit )
-        => ValidateVerifyingDigit( 6, digits, secondVerifyingDigit );
 
     private bool IsCnpjFormatValid( string cnpj )
-    {
-        return Regex.IsMatch( cnpj, RegexPatterns.Cnpj );
-    }
+        => Regex.IsMatch( cnpj, RegexPatterns.Cnpj );
 
     private string RemoveMask( string cnpj )
         => Regex.Replace( cnpj, @"\.|\/|\-", "" );
 
-    public string Generate()
+    public string Generate( bool masked )
     {
         _cnpj = GenerateCalculatingDigits();
-        _cnpj += GenerateFirstVerifyingDigit( _cnpj );
-        _cnpj += GenerateSecondVerifyingDigit( _cnpj );
+        _cnpj += GenerateVerifyingDigits( 5, _cnpj );
+        _cnpj += GenerateVerifyingDigits( 6, _cnpj );
+
+        if ( masked )
+            _cnpj = _cnpj.Insert( 2, "." ).Insert( 6, "." ).Insert( 10, "/" ).Insert( 15, "-" );
 
         return _cnpj;
     }
 
-    public bool IsValid()
+    public string Generate()
+        => Generate( false );
+
+    public bool IsValid( string value )
     {
-        var validFormat = _cnpj.IsNotEmpty()
-            && IsCnpjFormatValid( _cnpj )
-            && !IsPattern( _cnpj );
+        var validFormat = value.IsNotEmpty()
+            && IsCnpjFormatValid( value )
+            && !IsPattern( value );
 
         if ( !validFormat )
             return false;
 
-        var cnpj = RemoveMask( _cnpj );
+        var cnpj = RemoveMask( value );
 
         var calculatingDigits = GetCalculatingDigits( cnpj );
         var firstVerifyingDigit = GetFirstVerifyingDigit( cnpj );
         var secondVerifyingDigit = GetSecondVerifyingDigit( cnpj );
 
-        return ValidateFirstVerifyingDigit( calculatingDigits, firstVerifyingDigit )
-            && ValidateSecondVerifyingDigit( calculatingDigits + firstVerifyingDigit, secondVerifyingDigit );
+        return ValidateVerifyingDigit( 5, calculatingDigits, firstVerifyingDigit )
+            && ValidateVerifyingDigit( 6, calculatingDigits + firstVerifyingDigit, secondVerifyingDigit );
     }
 
-    public bool IsValid( string value )
-    {
-        throw new NotImplementedException();
-    }
-
-    public string Generate( bool masked )
-    {
-        throw new NotImplementedException();
-    }
+    public bool IsValid()
+        => IsValid( _cnpj );
 }

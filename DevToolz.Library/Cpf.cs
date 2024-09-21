@@ -1,10 +1,4 @@
-﻿using DevToolz.Library.Extensions;
-using DevToolz.Library.Interfaces;
-using DevToolz.Library.Structs;
-using System.Data.SqlTypes;
-using System.Text.RegularExpressions;
-
-namespace DevToolz.Library;
+﻿namespace DevToolz.Library;
 
 public class Cpf : INumber, IGenerator, IValidator
 {
@@ -42,50 +36,6 @@ public class Cpf : INumber, IGenerator, IValidator
         return digits;
     }
 
-    //private string GenerateFirstVerifyingDigit( string digits )
-    //{
-    //    var result = 0;
-    //    var count = 10;
-    //    int rest;
-
-    //    foreach ( char digit in digits )
-    //    {
-    //        result += digit.ToInt() * count;
-    //        count--;
-    //    }
-
-    //    rest = result % 11;
-
-    //    if ( rest < 2 )
-    //        result = 0;
-    //    else
-    //        result = 11 - rest;
-
-    //    return result.ToString();
-    //}
-
-    //private string GenerateSecondVerifyingDigit( string dgitis )
-    //{
-    //    int result = 0;
-    //    int count = 11;
-    //    int rest;
-
-    //    foreach ( char digit in dgitis )
-    //    {
-    //        result += digit.ToInt() * count;
-    //        count--;
-    //    }
-
-    //    rest = result % 11;
-
-    //    if ( rest < 2 )
-    //        result = 0;
-    //    else
-    //        result = 11 - rest;
-
-    //    return result.ToString();
-    //}
-
     private string GenerateVerifyingDigits( int startCounter, string digits )
     {
         var result = 0;
@@ -112,36 +62,11 @@ public class Cpf : INumber, IGenerator, IValidator
     private string GetCalculatingDigits( string cpf )
         => cpf.Substring( 0, 9 );
 
-    //private bool ValidateVerifyingDigit( int startCounter, string digits, string verifyingDigit )
-    //{
-    //    var result = 0;
-
-    //    foreach ( char digit in digits )
-    //        result += digit.ToInt() * startCounter--;
-
-    //    var rest = result % 11;
-
-    //    if ( rest < 2 )
-    //        result = 0;
-    //    else
-    //        result = 11 - rest;
-
-    //    return result.IsEqual( verifyingDigit.ToInt() );
-    //}
-
-    private bool ValidateVerifyingDigit( int startCounter, string digits, string firstVerifyingDigit )
+    private bool ValidateVerifyingDigit( int startCounter, string digits, string verifyingDigit )
     {
-        //var checkDigit = GenerateVerifyingDigits( 10, digits );
         var checkDigit = GenerateVerifyingDigits( startCounter, digits );
-        return checkDigit.IsEqual( firstVerifyingDigit );
+        return checkDigit.IsEqual( verifyingDigit );
     }
-
-    //private bool ValidateSecondVerifyingDigit( string digits, string secondVerifyingDigit )
-    //{
-    //    //var checkDigit = GenerateVerifyingDigits( 10, digits );
-    //    //return checkDigit.IsEqual( secondVerifyingDigit );
-    //    => ValidateVerifyingDigit( 11, digits, secondVerifyingDigit );
-    //}
 
     private bool IsCpfFormatValid( string value )
         => Regex.IsMatch( value, RegexPatterns.Cpf );
