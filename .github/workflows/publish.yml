@@ -30,6 +30,12 @@ jobs:
     needs: Testar
 
     steps:
+    - name: Verificar API Key
+      env:
+        SUPER_SECRET: ${{ secrets.SuperSecret }}
+      run: |
+        echo "$SUPER_SECRET"
+
     - name: Checkout
       uses: actions/checkout@v4
       
@@ -47,4 +53,4 @@ jobs:
     - name: Enviar para Nuget.org
       env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
-      run: dotnet nuget push ./output/*.nupkg -k $NUGET_KEY -s https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "./output/*.nupkg" -k $NUGET_KEY -s https://api.nuget.org/v3/index.json
