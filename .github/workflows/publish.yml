@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
+  Testar:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,24 +25,24 @@ jobs:
     - name: Testar
       run: dotnet test ./DevToolz.Library.Test/DevToolz.Library.Test.csproj --verbosity normal
 
-  publish:
+  Publicar:
     runs-on: windows-latest
-    needs: test
+    needs: Testar
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
       
-    - name: Configurando .NET...
+    - name: Configurando .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.x
 
-    - name: Compilando projeto...
+    - name: Compilando projeto
       run: dotnet build ./DevToolz.Library/DevToolz.Library.csproj -c Release
 
-    - name: Empacotando...
+    - name: Empacotando
       run: dotnet pack ./DevToolz.Library/DevToolz.Library.csproj -c Release -o ./output
 
-    - name: Enviando para Nuget.org...
-      run: dotnet nuget push ./output/*.nupkg -k $NUGET_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols --no-dependencies --no-restore
+    - name: Enviando para Nuget.org
+      run: dotnet nuget push ./output/*.nupkg -k $NUGET_KEY -s https://api.nuget.org/v3/index.json --skip-duplicate --no-symbols --no-restore
