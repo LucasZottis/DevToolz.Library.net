@@ -168,4 +168,14 @@ public class Cnpj : INumber, IValidator, IGenerator
         return ValidateFirstVerifyingDigit( calculatingDigits, firstVerifyingDigit )
             && ValidateSecondVerifyingDigit( calculatingDigits + firstVerifyingDigit, secondVerifyingDigit );
     }
+
+    public bool IsValid( string value )
+    {
+        throw new NotImplementedException();
+    }
+
+    public string Generate( bool masked )
+    {
+        throw new NotImplementedException();
+    }
 }

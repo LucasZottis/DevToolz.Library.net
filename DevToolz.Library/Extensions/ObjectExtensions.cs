@@ -2,13 +2,13 @@
 
 public static class ObjectExtensions
 {
-    public static TClass ToModel<TClass>( this object source )
-        where TClass : class, new()
-    {
-        var modelReturn = new TClass();
-        ClassHelper.CopyProperties( source, modelReturn );
-        return modelReturn;
-    }
+    //public static TClass ToModel<TClass>( this object source )
+    //    where TClass : class, new()
+    //{
+    //    var modelReturn = new TClass();
+    //    ClassHelper.CopyProperties( source, modelReturn );
+    //    return modelReturn;
+    //}
 
     public static bool IsNull( this object? source )
         => source == null;

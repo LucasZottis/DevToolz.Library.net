@@ -3,5 +3,5 @@
 public interface IValidator
 {
     bool IsValid();
-    //bool IsValid(string value);
+    bool IsValid( string value );
 }

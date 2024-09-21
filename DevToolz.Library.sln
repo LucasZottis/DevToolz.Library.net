@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34723.18
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevToolz.Library", "DevToolz.Library\DevToolz.Library.csproj", "{AB54B3A4-593E-428D-AA2B-B4396548B2E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevToolz.Library", "DevToolz.Library\DevToolz.Library.csproj", "{AB54B3A4-593E-428D-AA2B-B4396548B2E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevToolz.Library.Test", "DevToolz.Library.Test\DevToolz.Library.Test.csproj", "{D4222899-256C-4FB2-AC42-B7EDAF939310}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{AB54B3A4-593E-428D-AA2B-B4396548B2E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB54B3A4-593E-428D-AA2B-B4396548B2E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB54B3A4-593E-428D-AA2B-B4396548B2E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4222899-256C-4FB2-AC42-B7EDAF939310}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4222899-256C-4FB2-AC42-B7EDAF939310}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4222899-256C-4FB2-AC42-B7EDAF939310}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4222899-256C-4FB2-AC42-B7EDAF939310}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

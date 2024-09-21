@@ -1,9 +1,4 @@
-﻿using BibliotecaPublica.Core.Enums;
-using BibliotecaPublica.Core.Structs;
-using DevToolz.Library.Extensions;
-using System.Globalization;
-
-namespace DevToolz.Library.Extensions;
+﻿namespace DevToolz.Library.Extensions;
 
 public static class StringExtensions
 {
@@ -353,23 +348,23 @@ public static class StringExtensions
     public static short ToShort( this string value )
         => value.IsNotEmpty() ? short.Parse( value ) : 0.ToShort();
 
-    public static string FormatTo( this string value, FormatType formatType )
-    {
-        switch ( formatType )
-        {
-            case FormatType.Nenhuma:
-                return value;
-            case FormatType.Monetario:
-            {
-                if ( value.IsEmpty() )
-                    return DefaultValues.ValorPadraoMonetario.ToString( "C2" );
+    //public static string FormatTo( this string value, FormatType formatType )
+    //{
+    //    switch ( formatType )
+    //    {
+    //        case FormatType.Nenhuma:
+    //            return value;
+    //        case FormatType.Monetario:
+    //        {
+    //            if ( value.IsEmpty() )
+    //                return DefaultValues.ValorPadraoMonetario.ToString( "C2" );
 
-                return $"R$ {ToCurrency( value )}";
-            }
-            default:
-                return value;
-        }
-    }
+    //            return $"R$ {ToCurrency( value )}";
+    //        }
+    //        default:
+    //            return value;
+    //    }
+    //}
 
     /// <summary>
     /// Verifica se a string informada tem apenas espaços.

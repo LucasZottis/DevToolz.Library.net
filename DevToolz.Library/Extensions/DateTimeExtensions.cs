@@ -1,4 +1,4 @@
-﻿using BibliotecaPublica.Core.Enums;
+﻿using DevToolz.Library.Enums;
 using System.Globalization;
 
 namespace DevToolz.Library.Extensions;
@@ -57,17 +57,17 @@ public static class DateTimeExtensions
     public static DateTime GetEndDateOfDayFromDate( this DateTime value )
         => new DateTime( value.Year, value.Month, value.Day, 23, 59, 59 );
 
-    public static string ToStringFormat( this DateTime value, FormatoDataHora format )
+    public static string ToStringFormat( this DateTime value, DateTimeFormat format )
     {
         switch ( format )
         {
-            case FormatoDataHora.DataHoraPadraoBancoDados:
+            case DateTimeFormat.DateTimeDataBase:
                 return value.ToStringFullDataBaseFormat();
-            case FormatoDataHora.DataPadraoBancoDados:
+            case DateTimeFormat.DateOnlyDataBse:
                 return value.ToStringShortDataBaseFormat();
-            case FormatoDataHora.DataHoraPadrao:
+            case DateTimeFormat.DateTime:
                 return value.ToStringFullLocaleFormat();
-            case FormatoDataHora.DataPadrao:
+            case DateTimeFormat.DateOnly:
                 return value.ToStringShortFormat();
         }
 
