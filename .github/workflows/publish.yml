@@ -51,4 +51,4 @@ jobs:
       run: dotnet pack ./DevToolz.Library/DevToolz.Library.csproj -c Release -o ./output
 
     - name: Enviar para nuget.org
-      run: dotnet nuget push ./output/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
