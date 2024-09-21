@@ -30,12 +30,6 @@ jobs:
     needs: Testar
 
     steps:
-    - name: Verificar API Key
-      env:
-        SUPER_SECRET: ${{ secrets.NUGET_KEY }}
-      run: |
-        echo "$SUPER_SECRET"
-
     - name: Checkout
       uses: actions/checkout@v4
       
@@ -50,5 +44,9 @@ jobs:
     - name: Empacotar
       run: dotnet pack ./DevToolz.Library/DevToolz.Library.csproj -c Release -o ./output
 
+    - name: Capturar nome do pacote
+      id: capture-package
+      run: echo "PACKAGE_NAME=$(ls ./output/*.nupkg)" >> $GITHUB_ENV
+
     - name: Enviar para nuget.org
-      run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push "$PACKAGE_NAME" --api-key ${{ secrets.NUGET_KEY }} --source https://api.nuget.org/v3/index.json
