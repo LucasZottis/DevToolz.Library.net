@@ -23,7 +23,7 @@ jobs:
         dotnet-version: 8.x
 
     - name: Test
-      run: dotnet test ./DevToolz.Library.Test/DevToolz.Library.Test.csproj --no-build --verbosity normal
+      run: dotnet test ./DevToolz.Library.Test/DevToolz.Library.Test.csproj --verbosity normal
 
   publish:
     runs-on: windows-latest
