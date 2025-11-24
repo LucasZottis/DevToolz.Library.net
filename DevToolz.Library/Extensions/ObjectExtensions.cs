@@ -1,4 +1,6 @@
-﻿namespace DevToolz.Library.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DevToolz.Library.Extensions;
 
 public static class ObjectExtensions
 {
@@ -10,9 +12,9 @@ public static class ObjectExtensions
     //    return modelReturn;
     //}
 
-    public static bool IsNull( this object? source )
+    public static bool IsNull( [NotNullWhen( false )] this object source )
         => source == null;
 
-    public static bool IsNotNull( this object? source )
+    public static bool IsNotNull( [NotNullWhen( true )] this object source )
         => source != null;
 }
