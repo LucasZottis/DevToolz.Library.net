@@ -302,7 +302,7 @@ public static class StringExtensions
     /// <returns>Retorna um value decimal.</returns>
     public static decimal ToDecimal( this string value )
     {
-        value = value.Replace( ".", "," );
+        value = value.Replace( ",", "." );
 
         if ( value.IsNotEmpty() )
             return decimal.Parse( value, CultureInfo.InvariantCulture );
