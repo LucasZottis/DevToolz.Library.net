@@ -301,7 +301,14 @@ public static class StringExtensions
     /// <Param name="value">value a ser convertido.</Param>
     /// <returns>Retorna um value decimal.</returns>
     public static decimal ToDecimal( this string value )
-        => value.IsNotEmpty() ? decimal.Parse( value ) : 0m;
+    {
+        value = value.Replace( ".", "," );
+
+        if ( value.IsNotEmpty() )
+            return decimal.Parse( value, CultureInfo.InvariantCulture );
+
+        return 0m;
+    }
 
     // TODO: Verificação se tem apenas números.
     public static double ToDouble( this string value )
