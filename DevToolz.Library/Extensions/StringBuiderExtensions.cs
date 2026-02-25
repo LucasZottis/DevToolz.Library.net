@@ -1,8 +1,8 @@
-﻿using System.Text;
+using System.Text;
 
 namespace DevToolz.Library.Extensions;
 
-internal static class StringBuiderExtensions
+public static class StringBuiderExtensions
 {
     /// <summary>
     /// Converte um string para bool.
@@ -161,5 +161,4 @@ internal static class StringBuiderExtensions
     /// <returns>Retorna true se não está vazio.</returns>
     public static bool IsNotEmpty( this StringBuilder value )
         => value.ToString().IsNotEmpty();
-
 }
