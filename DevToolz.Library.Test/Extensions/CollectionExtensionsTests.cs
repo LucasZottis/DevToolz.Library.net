@@ -35,8 +35,8 @@ public class CollectionExtensionsTests
     {
         var table = new DataTable();
         table.Columns.Add( "Id", typeof( int ) );
-
         var row = table.Rows.Add( 1 );
+        table.AcceptChanges();
         row.Delete();
 
         Assert.True( table.IsNotEmpty( true ) );
@@ -53,3 +53,4 @@ public class CollectionExtensionsTests
         Assert.False( new List<int> { 1 }.IsEmptyList() );
     }
 }
+    
