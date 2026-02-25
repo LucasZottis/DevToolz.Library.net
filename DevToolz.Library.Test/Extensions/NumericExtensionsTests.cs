@@ -12,10 +12,10 @@ public class NumericExtensionsTests
     [Fact]
     public void BooleanExtensions_ConvertExpectedValues()
     {
-        Assert.Equal( (byte)1, true.ToByte() );
-        Assert.Equal( 0m, false.ToDecimal() );
-        Assert.Equal( 1, true.ToInt() );
-        Assert.Equal( 0L, false.ToLong() );
+        Assert.Equal((byte)1, true.ToByte());
+        Assert.Equal(0m, false.ToDecimal());
+        Assert.Equal(1, true.ToInt());
+        Assert.Equal(0L, false.ToLong());
     }
 
     [Fact]
@@ -24,10 +24,10 @@ public class NumericExtensionsTests
         byte value = 2;
         int number = 5;
 
-        Assert.True( value.Between( 1, 3 ) );
-        Assert.True( number.Between( 1, 10 ) );
-        Assert.Equal( SampleEnum.Two, value.ToEnum<SampleEnum>() );
-        Assert.Equal( SampleEnum.One, 1.ToEnum<SampleEnum>() );
+        Assert.True(value.Between(1, 3));
+        Assert.True(number.Between(1, 10));
+        Assert.Equal(SampleEnum.Two, value.ToEnum<SampleEnum>());
+        Assert.Equal(SampleEnum.One, 1.ToEnum<SampleEnum>());
     }
 
     [Fact]
@@ -39,20 +39,21 @@ public class NumericExtensionsTests
         long lng = 9;
         short sht = 7;
 
-        Assert.Equal( 2, dec.ToInt() );
-        Assert.Equal( 2, dbl.ToInt() );
-        Assert.Equal( 4, flt.ToInt() );
-        Assert.Equal( '9', lng.ToChar() );
-        Assert.True( sht.Between( 5, 8 ) );
+        Assert.Equal(2, dec.ToInt());
+        Assert.Equal(2, dbl.ToInt());
+        Assert.Equal(4, flt.ToInt());
+        Assert.Equal('9', lng.ToChar());
+        Assert.True(sht.Between(5, 8));
     }
 
     [Fact]
     public void CharExtensions_IdentifyCharacterTypes()
     {
-        Assert.True( '8'.IsNumber() );
-        Assert.True( 'A'.IsLetter() );
-        Assert.True( 'A'.IsCapitalLetter() );
-        Assert.True( 'a'.IsLowerCase() );
-        Assert.True( '\n'.IsReturnChar() );
+        Assert.True('8'.IsNumber());
+        Assert.True('A'.IsLetter());
+        Assert.True('A'.IsCapitalLetter());
+        Assert.True('a'.IsLowerCase());
+        Assert.True('\b'.IsReturnChar());
+        Assert.False('\n'.IsReturnChar());
     }
 }
