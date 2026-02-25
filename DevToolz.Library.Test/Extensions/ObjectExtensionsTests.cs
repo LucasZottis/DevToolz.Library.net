@@ -1,9 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace DevToolz.Library.Test.Extensions;
 
 public class ObjectExtensionsTests
@@ -238,12 +232,12 @@ public class ObjectExtensionsTests
             // Se chegou aqui, o compilador deveria entender que testString não é null
             // devido ao atributo [NotNullWhen(false)]
             var length = testString.Length; // Isso não deveria gerar warning
-            Assert.True( false, "Este código não deveria ser executado" );
+            Assert.True(!testString.IsNull(), "Este código não deveria ser executado" );
         }
         else
         {
             // testString é null
-            Assert.True( true );
+            Assert.True(testString.IsNull());
         }
     }
 
@@ -263,7 +257,7 @@ public class ObjectExtensionsTests
         }
         else
         {
-            Assert.True( false, "Este código não deveria ser executado" );
+            Assert.True(!testString.IsNotNull(), "Este código não deveria ser executado" );
         }
     }
 
