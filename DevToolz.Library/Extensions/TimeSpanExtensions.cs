@@ -1,8 +1,8 @@
-﻿namespace DevToolz.Library.Extensions;
+namespace DevToolz.Library.Extensions;
 
 public static class TimeSpanExtensions
 {
-    public static string ToString( this TimeSpan value, bool showDays = false )
+    public static string ToString( this TimeSpan value, bool showDays )
     {
         var horas = value.Hours < 10 ? $"0{value.Hours}" : value.Hours.ToString();
         var minutos = value.Minutes < 10 ? $"0{value.Minutes}" : value.Minutes.ToString();
