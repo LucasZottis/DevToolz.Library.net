@@ -1208,13 +1208,26 @@ public class StringExtensionsTests
     [Theory]
     [InlineData( "", "" )]
     [InlineData( null, null )]
-    public void RemoveAccents_WithNullOrEmpty_ReturnsSameValue( string input, string expected )
+    public void RemoveAccents_WithNullOrEmpty_ReturnsSameValue( string? input, string? expected )
     {
         // Act
-        var result = input.RemoveAccents();
+        var result = StringExtensions.RemoveAccents( input! );
 
         // Assert
         Assert.Equal( expected, result );
+    }
+
+    [Fact]
+    public void RemoveAccents_WithWhitespaceAndAccents_RemovesDiacritics()
+    {
+        // Arrange
+        string testString = "  á  ç  ";
+
+        // Act
+        var result = testString.RemoveAccents();
+
+        // Assert
+        Assert.Equal( "  a  c  ", result );
     }
 
     #endregion

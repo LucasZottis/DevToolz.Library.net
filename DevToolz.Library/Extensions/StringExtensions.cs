@@ -446,7 +446,7 @@ public static class StringExtensions
 
     public static string RemoveAccents( this string value )
     {
-        if ( value.IsEmpty() )
+        if ( string.IsNullOrEmpty( value ) )
             return value;
 
         string normalizedString = value.Normalize( NormalizationForm.FormD );
