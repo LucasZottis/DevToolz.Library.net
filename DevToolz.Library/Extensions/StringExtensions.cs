@@ -314,8 +314,10 @@ public static class StringExtensions
     // TODO: Verificação se tem apenas números.
     public static double ToDouble( this string value )
     {
+        value = value.Replace( ",", "." );
+
         if ( value.IsNotEmpty() )
-            return double.Parse( value, CultureInfo.CurrentCulture );
+            return double.Parse( value, CultureInfo.InvariantCulture );
 
         return 0;
     }
@@ -333,8 +335,10 @@ public static class StringExtensions
     // TODO: Verificação se tem apenas números.
     public static float ToFloat( this string value )
     {
+        value = value.Replace( ",", "." );
+
         if ( value.IsNotEmpty() )
-            return float.Parse( value, CultureInfo.CurrentCulture );
+            return float.Parse( value, CultureInfo.InvariantCulture );
 
         return 0;
     }
@@ -443,7 +447,7 @@ public static class StringExtensions
             .RemovePeriods()
             .RemoverUnderline()
             .RemoveComma();
-
+  
     public static string RemoveAccents( this string value )
     {
         if ( value.IsEmpty() )

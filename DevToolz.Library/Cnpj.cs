@@ -12,21 +12,12 @@ public class Cnpj : INumber, IValidator, IGenerator
 
     private bool IsPattern( string value )
     {
-        return value.IsEqual( "000000000000" )
-            || value.IsEqual( "111111111111" )
-            || value.IsEqual( "222222222222" )
-            || value.IsEqual( "333333333333" )
-            || value.IsEqual( "444444444444" )
-            || value.IsEqual( "555555555555" )
-            || value.IsEqual( "666666666666" )
-            || value.IsEqual( "777777777777" )
-            || value.IsEqual( "888888888888" )
-            || value.IsEqual( "999999999999" );
+        return value.Length > 0 && value.All( current => current == value[ 0 ] );
     }
 
     private string GenerateCalculatingDigits()
     {
-        var randomDigits = new Random( DateTime.Now.Second );
+        var randomDigits = new Random();
         string digits;
 
         do
@@ -34,7 +25,7 @@ public class Cnpj : INumber, IValidator, IGenerator
             digits = string.Empty;
 
             for ( int i = 0; i < 12; i++ )
-                digits += randomDigits.Next( 0, 9 ).ToString();
+                digits += randomDigits.Next( 0, 10 ).ToString();
 
         } while ( IsPattern( digits ) );
 
@@ -102,14 +93,16 @@ public class Cnpj : INumber, IValidator, IGenerator
 
     public bool IsValid( string value )
     {
-        var validFormat = value.IsNotEmpty()
-            && IsCnpjFormatValid( value )
-            && !IsPattern( value );
-
-        if ( !validFormat )
+        if ( value.IsEmpty() )
             return false;
 
         var cnpj = RemoveMask( value );
+
+        var validFormat = IsCnpjFormatValid( value )
+            && !IsPattern( cnpj );
+
+        if ( !validFormat )
+            return false;
 
         var calculatingDigits = GetCalculatingDigits( cnpj );
         var firstVerifyingDigit = GetFirstVerifyingDigit( cnpj );
