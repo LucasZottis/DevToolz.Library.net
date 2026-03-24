@@ -38,6 +38,90 @@ public class FormatConversionServiceTests
         Assert.Equal( "gosta de, testes", document.RootElement[ 0 ].GetProperty( "observacao" ).GetString() );
     }
 
+    [Fact]
+    public void Convert_CsvToJson_WithCrLfLineEndings_ShouldConvertSuccessfully()
+    {
+        // Arrange
+        string csv = "nome,idade\r\nAna,30\r\nBruno,25";
+        var service = FormatConversionService.CreateDefault();
+
+        // Act
+        string json = service.Convert( "csv", "json", csv );
+        using JsonDocument document = JsonDocument.Parse( json );
+
+        // Assert
+        Assert.Equal( 2, document.RootElement.GetArrayLength() );
+        Assert.Equal( "Ana", document.RootElement[ 0 ].GetProperty( "nome" ).GetString() );
+        Assert.Equal( "25", document.RootElement[ 1 ].GetProperty( "idade" ).GetString() );
+    }
+
+    [Fact]
+    public void Convert_CsvToJson_WithHeadersOnly_ShouldReturnEmptyArray()
+    {
+        // Arrange
+        string csv = "nome,idade";
+        var service = FormatConversionService.CreateDefault();
+
+        // Act
+        string json = service.Convert( "csv", "json", csv );
+        using JsonDocument document = JsonDocument.Parse( json );
+
+        // Assert
+        Assert.Equal( 0, document.RootElement.GetArrayLength() );
+    }
+
+    [Fact]
+    public void Convert_CsvToJson_WithSingleColumn_ShouldConvertSuccessfully()
+    {
+        // Arrange
+        string csv = "nome\nAna\nBruno";
+        var service = FormatConversionService.CreateDefault();
+
+        // Act
+        string json = service.Convert( "csv", "json", csv );
+        using JsonDocument document = JsonDocument.Parse( json );
+
+        // Assert
+        Assert.Equal( 2, document.RootElement.GetArrayLength() );
+        Assert.Equal( "Ana", document.RootElement[ 0 ].GetProperty( "nome" ).GetString() );
+    }
+
+    [Fact]
+    public void Convert_CsvToJson_WithEscapedQuotes_ShouldHandleDoubleQuote()
+    {
+        // Arrange
+        string csv = "nome,descricao\nAna,\"diz \"\"olá\"\"\"";
+        var service = FormatConversionService.CreateDefault();
+
+        // Act
+        string json = service.Convert( "csv", "json", csv );
+        using JsonDocument document = JsonDocument.Parse( json );
+
+        // Assert
+        Assert.Equal( "diz \"olá\"", document.RootElement[ 0 ].GetProperty( "descricao" ).GetString() );
+    }
+
+    [Fact]
+    public void Convert_CsvToJson_WithUnclosedQuote_ShouldThrowFormatException()
+    {
+        // Arrange
+        string csv = "nome,idade\n\"Ana,30";
+        var service = FormatConversionService.CreateDefault();
+
+        // Act & Assert
+        Assert.Throws<FormatException>( () => service.Convert( "csv", "json", csv ) );
+    }
+
+    [Fact]
+    public void Convert_CsvToJson_WithDuplicateHeaders_ShouldThrowFormatException()
+    {
+        // Arrange
+        string csv = "nome,Nome\nAna,Ana";
+        var service = FormatConversionService.CreateDefault();
+
+        // Act & Assert
+        Assert.Throws<FormatException>( () => service.Convert( "csv", "json", csv ) );
+    }
 
     [Fact]
     public void Convert_CsvToJson_WithInconsistentColumns_ShouldThrowFormatException()
@@ -58,6 +142,37 @@ public class FormatConversionServiceTests
 
         // Act & Assert
         Assert.Throws<NotSupportedException>( () => service.Convert( "xml", "json", "<name>Ana</name>" ) );
+    }
+
+    [Fact]
+    public void Convert_WhenSourceFormatIsNull_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        var service = FormatConversionService.CreateDefault();
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>( () => service.Convert( null!, "json", "a,b" ) );
+    }
+
+    [Fact]
+    public void Convert_WhenTargetFormatIsNull_ShouldThrowArgumentNullException()
+    {
+        // Arrange
+        var service = FormatConversionService.CreateDefault();
+
+        // Act & Assert
+        Assert.Throws<ArgumentNullException>( () => service.Convert( "csv", null!, "a,b" ) );
+    }
+
+    [Fact]
+    public void Register_WhenDuplicateConverter_ShouldThrowInvalidOperationException()
+    {
+        // Arrange
+        var registry = new FormatConverterRegistry();
+        registry.Register( new ReverseTextConverter() );
+
+        // Act & Assert
+        Assert.Throws<InvalidOperationException>( () => registry.Register( new ReverseTextConverter() ) );
     }
 
     [Fact]

@@ -1,24 +1,30 @@
 using DevToolz.Library.Converters.Interfaces;
 using DevToolz.Library.Converters.Models;
+using System.Collections.Concurrent;
 
 namespace DevToolz.Library.Converters;
 
-public class FormatConverterRegistry
+public sealed class FormatConverterRegistry : IFormatConverterRegistry
 {
-    private readonly Dictionary<ConverterKey, IFormatConverter> _converters = new();
+    private readonly ConcurrentDictionary<ConverterKey, IFormatConverter> _converters = new();
 
-    public FormatConverterRegistry Register( IFormatConverter converter )
+    public IFormatConverterRegistry Register( IFormatConverter converter )
     {
         ArgumentNullException.ThrowIfNull( converter );
 
         var key = new ConverterKey( converter.SourceFormat, converter.TargetFormat ).Normalize();
-        _converters[ key ] = converter;
+
+        if( !_converters.TryAdd( key, converter ) )
+            throw new InvalidOperationException( $"Já existe um conversor registrado para '{converter.SourceFormat}' → '{converter.TargetFormat}'." );
 
         return this;
     }
 
     public IFormatConverter Resolve( string sourceFormat, string targetFormat )
     {
+        ArgumentNullException.ThrowIfNull( sourceFormat );
+        ArgumentNullException.ThrowIfNull( targetFormat );
+
         var key = new ConverterKey( sourceFormat, targetFormat ).Normalize();
 
         if( _converters.TryGetValue( key, out var converter ) )

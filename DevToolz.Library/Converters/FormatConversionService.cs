@@ -2,17 +2,20 @@ using DevToolz.Library.Converters.Interfaces;
 
 namespace DevToolz.Library.Converters;
 
-public class FormatConversionService
+public sealed class FormatConversionService
 {
-    private readonly FormatConverterRegistry _registry;
+    private readonly IFormatConverterRegistry _registry;
 
-    public FormatConversionService( FormatConverterRegistry registry )
+    public FormatConversionService( IFormatConverterRegistry registry )
     {
         _registry = registry ?? throw new ArgumentNullException( nameof( registry ) );
     }
 
     public string Convert( string sourceFormat, string targetFormat, string input )
     {
+        ArgumentNullException.ThrowIfNull( sourceFormat );
+        ArgumentNullException.ThrowIfNull( targetFormat );
+
         IFormatConverter converter = _registry.Resolve( sourceFormat, targetFormat );
         return converter.Convert( input );
     }

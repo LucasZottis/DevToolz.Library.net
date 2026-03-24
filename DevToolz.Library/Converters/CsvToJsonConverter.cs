@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace DevToolz.Library.Converters;
 
-public class CsvToJsonConverter : IFormatConverter
+public sealed class CsvToJsonConverter : IFormatConverter
 {
     public string SourceFormat => "csv";
 
@@ -25,6 +25,15 @@ public class CsvToJsonConverter : IFormatConverter
         if( headers.Length == 0 || headers.Any( string.IsNullOrWhiteSpace ) )
             throw new FormatException( "CSV inválido: cabeçalho ausente ou inválido." );
 
+        var normalizedHeaders = headers.Select( h => h.Trim().ToLowerInvariant() ).ToArray();
+        var seen = new HashSet<string>();
+
+        foreach( string header in normalizedHeaders )
+        {
+            if( !seen.Add( header ) )
+                throw new FormatException( $"CSV inválido: cabeçalho duplicado '{header}'." );
+        }
+
         var result = new List<Dictionary<string, string?>>();
 
         for( int i = 1; i < rows.Count; i++ )
@@ -34,7 +43,7 @@ public class CsvToJsonConverter : IFormatConverter
             if( row.Length != headers.Length )
                 throw new FormatException( $"CSV inválido: linha {i + 1} possui {row.Length} colunas, esperado {headers.Length}." );
 
-            var item = new Dictionary<string, string?>( StringComparer.OrdinalIgnoreCase );
+            var item = new Dictionary<string, string?>();
 
             for( int j = 0; j < headers.Length; j++ )
                 item[ headers[ j ] ] = row[ j ];
@@ -95,6 +104,9 @@ public class CsvToJsonConverter : IFormatConverter
 
             currentCell.Append( current );
         }
+
+        if( insideQuotes )
+            throw new FormatException( "CSV inválido: aspa não fechada." );
 
         currentRow.Add( currentCell.ToString() );
 
