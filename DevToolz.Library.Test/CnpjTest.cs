@@ -31,4 +31,32 @@ public class CnpjTest
         Assert.True( validator.IsValid( cnpj ) );
         Assert.True( validator.IsValid( cnpjMasked ) );
     }
+
+    [Theory]
+    [InlineData( "00.000.000/0000-00" )]
+    [InlineData( "11.111.111/1111-11" )]
+    [InlineData( "22.222.222/2222-22" )]
+    [InlineData( "33.333.333/3333-33" )]
+    [InlineData( "44.444.444/4444-44" )]
+    [InlineData( "55.555.555/5555-55" )]
+    [InlineData( "66.666.666/6666-66" )]
+    [InlineData( "77.777.777/7777-77" )]
+    [InlineData( "88.888.888/8888-88" )]
+    [InlineData( "99.999.999/9999-99" )]
+    [InlineData( "00000000000000" )]
+    [InlineData( "11111111111111" )]
+    [InlineData( "22222222222222" )]
+    [InlineData( "33333333333333" )]
+    [InlineData( "44444444444444" )]
+    [InlineData( "55555555555555" )]
+    [InlineData( "66666666666666" )]
+    [InlineData( "77777777777777" )]
+    [InlineData( "88888888888888" )]
+    [InlineData( "99999999999999" )]
+    public void Validate_ShouldBeFalse_WhenCnpjHasRepeatedDigits( string value )
+    {
+        IValidator validator = new Cnpj();
+
+        Assert.False( validator.IsValid( value ) );
+    }
 }
