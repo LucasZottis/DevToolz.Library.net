@@ -12,10 +12,7 @@ public class Cnpj : INumber, IValidator, IGenerator
 
     private bool IsPattern( string value )
     {
-        if ( value.Length != 14 )
-            return false;
-
-        return value.All( current => current == value[ 0 ] );
+        return value.Length > 0 && value.All( current => current == value[ 0 ] );
     }
 
     private string GenerateCalculatingDigits()

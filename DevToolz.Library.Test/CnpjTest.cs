@@ -44,6 +44,14 @@ public class CnpjTest
     [InlineData( "88.888.888/8888-88" )]
     [InlineData( "99.999.999/9999-99" )]
     [InlineData( "00000000000000" )]
+    [InlineData( "11111111111111" )]
+    [InlineData( "22222222222222" )]
+    [InlineData( "33333333333333" )]
+    [InlineData( "44444444444444" )]
+    [InlineData( "55555555555555" )]
+    [InlineData( "66666666666666" )]
+    [InlineData( "77777777777777" )]
+    [InlineData( "88888888888888" )]
     [InlineData( "99999999999999" )]
     public void Validate_ShouldBeFalse_WhenCnpjHasRepeatedDigits( string value )
     {
