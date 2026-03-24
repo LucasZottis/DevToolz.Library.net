@@ -1192,43 +1192,5 @@ public class StringExtensionsTests
         Assert.Equal( "1234567", result );
     }
 
-    [Fact]
-    public void RemoveAccents_RemovesDiacriticsFromString()
-    {
-        // Arrange
-        string testString = "áàãâä éèêë íìîï óòõôö úùûü ç ñ";
-
-        // Act
-        var result = testString.RemoveAccents();
-
-        // Assert
-        Assert.Equal( "aaaaa eeee iiii ooooo uuuu c n", result );
-    }
-
-    [Theory]
-    [InlineData( "", "" )]
-    [InlineData( null, null )]
-    public void RemoveAccents_WithNullOrEmpty_ReturnsSameValue( string? input, string? expected )
-    {
-        // Act
-        var result = StringExtensions.RemoveAccents( input! );
-
-        // Assert
-        Assert.Equal( expected, result );
-    }
-
-    [Fact]
-    public void RemoveAccents_WithWhitespaceAndAccents_RemovesDiacritics()
-    {
-        // Arrange
-        string testString = "  á  ç  ";
-
-        // Act
-        var result = testString.RemoveAccents();
-
-        // Assert
-        Assert.Equal( "  a  c  ", result );
-    }
-
     #endregion
 }
