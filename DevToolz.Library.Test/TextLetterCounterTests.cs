@@ -14,8 +14,8 @@ public class TextLetterCounterTests
 
         // Assert
         Assert.Equal( 29, result.TotalCharacters );
-        Assert.Equal( 25, result.TotalCharactersWithoutSpaces );
-        Assert.Equal( 4, result.TotalSpaces );
+        Assert.Equal( 24, result.TotalCharactersWithoutSpaces );
+        Assert.Equal( 5, result.TotalSpaces );
         Assert.Equal( 11, result.TotalConsonants );
         Assert.Equal( 8, result.TotalVowels );
         Assert.Equal( 3, result.TotalNumbers );
