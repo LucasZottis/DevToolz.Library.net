@@ -93,18 +93,16 @@ public class Cnpj : INumber, IValidator, IGenerator
 
     public bool IsValid( string value )
     {
-        if ( value.IsEmpty() )
-            return false;
-
         var cnpj = RemoveMask( value );
+        var calculatingDigits = GetCalculatingDigits( cnpj );
 
-        var validFormat = IsCnpjFormatValid( value )
-            && !IsPattern( cnpj );
+        var validFormat = value.IsNotEmpty()
+            && IsCnpjFormatValid( value )
+            && !IsPattern( calculatingDigits );
 
         if ( !validFormat )
             return false;
 
-        var calculatingDigits = GetCalculatingDigits( cnpj );
         var firstVerifyingDigit = GetFirstVerifyingDigit( cnpj );
         var secondVerifyingDigit = GetSecondVerifyingDigit( cnpj );
 
