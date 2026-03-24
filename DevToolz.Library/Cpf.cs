@@ -76,15 +76,15 @@ public class Cpf : INumber, IGenerator, IValidator
 
     public bool IsValid( string value )
     {
-        if ( !value.IsNotEmpty() || !IsCpfFormatValid( value ) )
+        var validFormat = value.IsNotEmpty()
+            && IsCpfFormatValid( value )
+            && !IsPattern( GetCalculatingDigits( RemoveMask( value ) ) );
+
+        if ( !validFormat )
             return false;
 
         var cpf = RemoveMask( value );
         var calculatingDigits = GetCalculatingDigits( cpf );
-
-        if ( IsPattern( calculatingDigits ) )
-            return false;
-
         var firstVerifyingDigit = GetFirstVerifyingDigit( cpf );
         var secondVerifyingDigit = GetSecondVerifyingDigit( cpf );
 

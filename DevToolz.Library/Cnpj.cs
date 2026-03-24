@@ -102,15 +102,15 @@ public class Cnpj : INumber, IValidator, IGenerator
 
     public bool IsValid( string value )
     {
-        if ( !value.IsNotEmpty() || !IsCnpjFormatValid( value ) )
+        var validFormat = value.IsNotEmpty()
+            && IsCnpjFormatValid( value )
+            && !IsPattern( GetCalculatingDigits( RemoveMask( value ) ) );
+
+        if ( !validFormat )
             return false;
 
         var cnpj = RemoveMask( value );
         var calculatingDigits = GetCalculatingDigits( cnpj );
-
-        if ( IsPattern( calculatingDigits ) )
-            return false;
-
         var firstVerifyingDigit = GetFirstVerifyingDigit( cnpj );
         var secondVerifyingDigit = GetSecondVerifyingDigit( cnpj );
 
