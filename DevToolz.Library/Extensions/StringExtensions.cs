@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace DevToolz.Library.Extensions;
 
@@ -442,4 +443,21 @@ public static class StringExtensions
             .RemovePeriods()
             .RemoverUnderline()
             .RemoveComma();
+
+    public static string RemoveAccents( this string value )
+    {
+        if ( string.IsNullOrEmpty( value ) )
+            return value;
+
+        string normalizedString = value.Normalize( NormalizationForm.FormD );
+        StringBuilder stringBuilder = new();
+
+        foreach ( char character in normalizedString )
+            if ( CharUnicodeInfo.GetUnicodeCategory( character ) != UnicodeCategory.NonSpacingMark )
+                stringBuilder.Append( character );
+
+        return stringBuilder
+            .ToString()
+            .Normalize( NormalizationForm.FormC );
+    }
 }
