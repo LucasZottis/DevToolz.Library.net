@@ -338,7 +338,7 @@ public static class StringExtensions
         value = value.Replace( ",", "." );
 
         if ( value.IsNotEmpty() )
-            return float.Parse( value, CultureInfo.InvariantCulture );
+            return float.Parse( value.Replace( ',', '.' ), CultureInfo.InvariantCulture );
 
         return 0;
     }
