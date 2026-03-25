@@ -6,22 +6,11 @@ public class Cpf : INumber, IGenerator, IValidator
     public string Number { get => _cpf; set => _cpf = value; }
 
     private bool IsPattern( string value )
-    {
-        return value.IsEqual( "000000000" )
-            || value.IsEqual( "111111111" )
-            || value.IsEqual( "222222222" )
-            || value.IsEqual( "333333333" )
-            || value.IsEqual( "444444444" )
-            || value.IsEqual( "555555555" )
-            || value.IsEqual( "666666666" )
-            || value.IsEqual( "777777777" )
-            || value.IsEqual( "888888888" )
-            || value.IsEqual( "999999999" );
-    }
+        => value.IsNotEmpty() && value.Distinct().Count() == 1;
 
     private string GenerateCalculatingDigits()
     {
-        var rrandomDigits = new Random( DateTime.Now.Second );
+        var randomDigits = Random.Shared;
         string digits;
 
         do
@@ -29,7 +18,7 @@ public class Cpf : INumber, IGenerator, IValidator
             digits = string.Empty;
 
             for ( int i = 0; i < 9; i++ )
-                digits += rrandomDigits.Next( 0, 9 ).ToString();
+                digits += randomDigits.Next( 0, 10 ).ToString();
 
         } while ( IsPattern( digits ) );
 
@@ -76,15 +65,16 @@ public class Cpf : INumber, IGenerator, IValidator
 
     public bool IsValid( string value )
     {
+        var cpf = RemoveMask( value );
+        var calculatingDigits = GetCalculatingDigits( cpf );
+
         var validFormat = value.IsNotEmpty()
             && IsCpfFormatValid( value )
-            && !IsPattern( value );
+            && !IsPattern( calculatingDigits );
 
         if ( !validFormat )
             return false;
 
-        var cpf = RemoveMask( value );
-        var calculatingDigits = GetCalculatingDigits( cpf );
         var firstVerifyingDigit = GetFirstVerifyingDigit( cpf );
         var secondVerifyingDigit = GetSecondVerifyingDigit( cpf );
 

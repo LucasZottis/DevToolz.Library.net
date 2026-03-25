@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace DevToolz.Library.Extensions;
 
@@ -313,8 +314,10 @@ public static class StringExtensions
     // TODO: Verificação se tem apenas números.
     public static double ToDouble( this string value )
     {
+        value = value.Replace( ",", "." );
+
         if ( value.IsNotEmpty() )
-            return double.Parse( value, CultureInfo.CurrentCulture );
+            return double.Parse( value, CultureInfo.InvariantCulture );
 
         return 0;
     }
@@ -332,6 +335,8 @@ public static class StringExtensions
     // TODO: Verificação se tem apenas números.
     public static float ToFloat( this string value )
     {
+        value = value.Replace( ",", "." );
+
         if ( value.IsNotEmpty() )
             return float.Parse( value.Replace( ',', '.' ), CultureInfo.InvariantCulture );
 
@@ -442,4 +447,21 @@ public static class StringExtensions
             .RemovePeriods()
             .RemoverUnderline()
             .RemoveComma();
+  
+    public static string RemoveAccents( this string value )
+    {
+        if ( value.IsEmpty() )
+            return value;
+
+        string normalizedString = value.Normalize( NormalizationForm.FormD );
+        StringBuilder stringBuilder = new();
+
+        foreach ( char character in normalizedString )
+            if ( CharUnicodeInfo.GetUnicodeCategory( character ) != UnicodeCategory.NonSpacingMark )
+                stringBuilder.Append( character );
+
+        return stringBuilder
+            .ToString()
+            .Normalize( NormalizationForm.FormC );
+    }
 }

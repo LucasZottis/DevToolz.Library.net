@@ -28,6 +28,7 @@ jobs:
   Publicar:
     runs-on: windows-latest
     needs: Testar
+    if: github.event_name == 'push'
 
     steps:
     - name: Checkout

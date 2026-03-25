@@ -14,9 +14,28 @@ public class CpfTest
         Assert.True( validator.IsValid( "38235836033" ) );
         Assert.False( validator.IsValid( "997.918.830-85" ) );
         Assert.False( validator.IsValid( "41916364056" ) );
+        Assert.False( validator.IsValid( "000.000.000-00" ) );
+        Assert.False( validator.IsValid( "00000000000" ) );
+        Assert.False( validator.IsValid( "111.111.111-11" ) );
+        Assert.False( validator.IsValid( "11111111111" ) );
 
         Assert.True( validator.IsValid( generator.Generate() ) );
         Assert.True( validator.IsValid( generator.Generate( true ) ) );
+    }
+
+
+    [Theory]
+    [InlineData( "00000000000" )]
+    [InlineData( "11111111111" )]
+    [InlineData( "99999999999" )]
+    [InlineData( "000.000.000-00" )]
+    [InlineData( "111.111.111-11" )]
+    [InlineData( "999.999.999-99" )]
+    public void Validate_ShouldReturnFalse_ForRepeatedDigitsPatterns( string cpf )
+    {
+        IValidator validator = new Cpf();
+
+        Assert.False( validator.IsValid( cpf ) );
     }
 
     [Fact]
