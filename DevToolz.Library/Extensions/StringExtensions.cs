@@ -333,7 +333,7 @@ public static class StringExtensions
     public static float ToFloat( this string value )
     {
         if ( value.IsNotEmpty() )
-            return float.Parse( value, CultureInfo.CurrentCulture );
+            return float.Parse( value.Replace( ',', '.' ), CultureInfo.InvariantCulture );
 
         return 0;
     }
