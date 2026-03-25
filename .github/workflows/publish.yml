@@ -6,8 +6,6 @@ name: Publicar pacote NuGet
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   Testar:
@@ -28,12 +26,11 @@ jobs:
   Publicar:
     runs-on: windows-latest
     needs: Testar
-    if: github.event_name == 'push'
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      
+
     - name: Configurar .NET
       uses: actions/setup-dotnet@v4
       with:
