@@ -10,16 +10,18 @@ public sealed class Cnpj : ICnpjMetadata, IValidator, IGenerator
 
     private string _value = string.Empty;
 
+    private string Digits => BrazilianDocumentHelper.RemoveMask( _value );
+
     public bool IsValid( string value ) => _validator.IsValid( value );
     public bool IsValid()               => _validator.IsValid( _value );
 
     public string Generate()              => _value = _generator.Generate();
     public string Generate( bool masked ) => _value = _generator.Generate( masked );
 
-    public string Masked()   => BrazilianDocumentHelper.MaskCnpj( BrazilianDocumentHelper.RemoveMask( _value ) );
-    public string Unmasked() => BrazilianDocumentHelper.RemoveMask( _value );
+    public string Masked()   => BrazilianDocumentHelper.MaskCnpj( Digits );
+    public string Unmasked() => Digits;
 
-    public string BaseDigits           => Unmasked()[..12];
-    public string FirstVerifyingDigit  => Unmasked()[12].ToString();
-    public string SecondVerifyingDigit => Unmasked()[13].ToString();
+    public string BaseDigits           => Digits[..12];
+    public string FirstVerifyingDigit  => Digits[12].ToString();
+    public string SecondVerifyingDigit => Digits[13].ToString();
 }
