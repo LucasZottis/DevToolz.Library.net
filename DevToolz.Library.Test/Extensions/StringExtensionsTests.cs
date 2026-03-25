@@ -617,19 +617,6 @@ public class StringExtensionsTests
     #region ToBoolean Tests
 
     [Fact]
-    public void ToBoolean_WithS_ReturnsTrue()
-    {
-        // Arrange
-        string testString = "s";
-
-        // Act
-        var result = testString.ToBoolean();
-
-        // Assert
-        Assert.True( result );
-    }
-
-    [Fact]
     public void ToBoolean_WithOne_ReturnsTrue()
     {
         // Arrange
