@@ -23,15 +23,6 @@ internal sealed class CpfGenerator : IGenerator
         digits += BrazilianDocumentHelper.ComputeVerifyingDigit( 10, digits, c => c - 1 );
         digits += BrazilianDocumentHelper.ComputeVerifyingDigit( 11, digits, c => c - 1 );
 
-        return masked ? Masked( digits ) : digits;
+        return masked ? BrazilianDocumentHelper.MaskCpf( digits ) : digits;
     }
-
-    public string Masked( string value )
-    {
-        var unmasked = BrazilianDocumentHelper.RemoveMask( value );
-        return unmasked.Insert( 3, "." ).Insert( 7, "." ).Insert( 11, "-" );
-    }
-
-    public string Unmasked( string value )
-        => BrazilianDocumentHelper.RemoveMask( value );
 }

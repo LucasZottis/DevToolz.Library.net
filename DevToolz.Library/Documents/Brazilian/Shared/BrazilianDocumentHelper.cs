@@ -12,6 +12,12 @@ internal static class BrazilianDocumentHelper
     public static string RemoveMask( string value )
         => value.Replace( ".", "" ).Replace( "-", "" ).Replace( "/", "" );
 
+    public static string MaskCpf( string unmasked )
+        => unmasked.Insert( 3, "." ).Insert( 7, "." ).Insert( 11, "-" );
+
+    public static string MaskCnpj( string unmasked )
+        => unmasked.Insert( 2, "." ).Insert( 6, "." ).Insert( 10, "/" ).Insert( 15, "-" );
+
     public static string ComputeVerifyingDigit( int startCounter, string digits, Func<int, int> counterStep )
     {
         var result = 0;

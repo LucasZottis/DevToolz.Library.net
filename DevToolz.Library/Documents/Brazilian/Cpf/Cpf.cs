@@ -1,4 +1,5 @@
 using DevToolz.Library.Documents.Brazilian.Cpf.Interfaces;
+using DevToolz.Library.Documents.Brazilian.Shared;
 using DevToolz.Library.Documents.Brazilian.Shared.Models;
 using DevToolz.Library.Documents.Brazilian.Shared.Resolvers;
 
@@ -17,8 +18,8 @@ public sealed class Cpf : ICpfMetadata, IValidator, IGenerator
     public string Generate()              => _value = _generator.Generate();
     public string Generate( bool masked ) => _value = _generator.Generate( masked );
 
-    public string Masked()   => _generator.Masked( _value );
-    public string Unmasked() => _generator.Unmasked( _value );
+    public string Masked()   => BrazilianDocumentHelper.MaskCpf( BrazilianDocumentHelper.RemoveMask( _value ) );
+    public string Unmasked() => BrazilianDocumentHelper.RemoveMask( _value );
 
     public string               BaseDigits           => Unmasked()[..9];
     public string               FirstVerifyingDigit  => Unmasked()[9].ToString();

@@ -1,4 +1,5 @@
 using DevToolz.Library.Documents.Brazilian.Cnpj.Interfaces;
+using DevToolz.Library.Documents.Brazilian.Shared;
 
 namespace DevToolz.Library.Documents.Brazilian.Cnpj;
 
@@ -15,8 +16,8 @@ public sealed class Cnpj : ICnpjMetadata, IValidator, IGenerator
     public string Generate()              => _value = _generator.Generate();
     public string Generate( bool masked ) => _value = _generator.Generate( masked );
 
-    public string Masked()   => _generator.Masked( _value );
-    public string Unmasked() => _generator.Unmasked( _value );
+    public string Masked()   => BrazilianDocumentHelper.MaskCnpj( BrazilianDocumentHelper.RemoveMask( _value ) );
+    public string Unmasked() => BrazilianDocumentHelper.RemoveMask( _value );
 
     public string BaseDigits           => Unmasked()[..12];
     public string FirstVerifyingDigit  => Unmasked()[12].ToString();

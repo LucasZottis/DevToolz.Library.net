@@ -25,15 +25,6 @@ internal sealed class CnpjGenerator : IGenerator
         digits += BrazilianDocumentHelper.ComputeVerifyingDigit( 5, digits, counterStep );
         digits += BrazilianDocumentHelper.ComputeVerifyingDigit( 6, digits, counterStep );
 
-        return masked ? Masked( digits ) : digits;
+        return masked ? BrazilianDocumentHelper.MaskCnpj( digits ) : digits;
     }
-
-    public string Masked( string value )
-    {
-        var unmasked = BrazilianDocumentHelper.RemoveMask( value );
-        return unmasked.Insert( 2, "." ).Insert( 6, "." ).Insert( 10, "/" ).Insert( 15, "-" );
-    }
-
-    public string Unmasked( string value )
-        => BrazilianDocumentHelper.RemoveMask( value );
 }
