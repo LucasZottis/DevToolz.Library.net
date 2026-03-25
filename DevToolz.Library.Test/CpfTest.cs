@@ -45,7 +45,7 @@ public class CpfTest
         IGenerator generator = new CpfGenerator();
         IValidator validator = new CpfValidator();
 
-        var cpf      = generator.Generate();
+        var cpf = generator.Generate();
         var cpfMasked = generator.Generate( true );
 
         Assert.True( validator.IsValid( cpf ) );
@@ -59,7 +59,7 @@ public class CpfTest
         cpf.Generate();
 
         var unmasked = cpf.Unmasked();
-        var masked   = cpf.Masked();
+        var masked = cpf.Masked();
 
         Assert.Equal( 11, unmasked.Length );
         Assert.True( unmasked.All( char.IsDigit ) );
@@ -75,7 +75,7 @@ public class CpfTest
         ICpfMetadata metadata = cpf;
 
         Assert.Equal( 9, metadata.BaseDigits.Length );
-        Assert.Equal( cpf.Unmasked()[..9], metadata.BaseDigits );
+        Assert.Equal( cpf.Unmasked()[ ..9 ], metadata.BaseDigits );
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class CpfTest
 
         ICpfMetadata metadata = cpf;
 
-        Assert.Equal( cpf.Unmasked()[9].ToString(), metadata.FirstVerifyingDigit );
+        Assert.Equal( cpf.Unmasked()[ 9 ].ToString(), metadata.FirstVerifyingDigit );
     }
 
     [Fact]
@@ -97,7 +97,7 @@ public class CpfTest
 
         ICpfMetadata metadata = cpf;
 
-        Assert.Equal( cpf.Unmasked()[10].ToString(), metadata.SecondVerifyingDigit );
+        Assert.Equal( cpf.Unmasked()[ 10 ].ToString(), metadata.SecondVerifyingDigit );
     }
 
     [Fact]
@@ -108,7 +108,7 @@ public class CpfTest
 
         ICpfMetadata metadata = cpf;
 
-        Assert.Equal( int.Parse( cpf.Unmasked()[8].ToString() ), metadata.IssuingUnitDigit );
+        Assert.Equal( int.Parse( cpf.Unmasked()[ 8 ].ToString() ), metadata.IssuingUnitDigit );
     }
 
     [Fact]

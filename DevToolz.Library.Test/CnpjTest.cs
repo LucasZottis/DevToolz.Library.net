@@ -31,7 +31,7 @@ public class CnpjTest
         IGenerator generator = new CnpjGenerator();
         IValidator validator = new CnpjValidator();
 
-        var cnpj      = generator.Generate();
+        var cnpj = generator.Generate();
         var cnpjMasked = generator.Generate( true );
 
         Assert.True( validator.IsValid( cnpj ) );
@@ -73,7 +73,7 @@ public class CnpjTest
         cnpj.Generate();
 
         var unmasked = cnpj.Unmasked();
-        var masked   = cnpj.Masked();
+        var masked = cnpj.Masked();
 
         Assert.Equal( 14, unmasked.Length );
         Assert.True( unmasked.All( char.IsDigit ) );
@@ -89,7 +89,7 @@ public class CnpjTest
         ICnpjMetadata metadata = cnpj;
 
         Assert.Equal( 12, metadata.BaseDigits.Length );
-        Assert.Equal( cnpj.Unmasked()[..12], metadata.BaseDigits );
+        Assert.Equal( cnpj.Unmasked()[ ..12 ], metadata.BaseDigits );
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class CnpjTest
 
         ICnpjMetadata metadata = cnpj;
 
-        Assert.Equal( cnpj.Unmasked()[12].ToString(), metadata.FirstVerifyingDigit );
+        Assert.Equal( cnpj.Unmasked()[ 12 ].ToString(), metadata.FirstVerifyingDigit );
     }
 
     [Fact]
@@ -111,6 +111,6 @@ public class CnpjTest
 
         ICnpjMetadata metadata = cnpj;
 
-        Assert.Equal( cnpj.Unmasked()[13].ToString(), metadata.SecondVerifyingDigit );
+        Assert.Equal( cnpj.Unmasked()[ 13 ].ToString(), metadata.SecondVerifyingDigit );
     }
 }
