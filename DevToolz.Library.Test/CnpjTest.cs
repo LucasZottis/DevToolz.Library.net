@@ -1,4 +1,6 @@
-﻿using DevToolz.Library.Interfaces;
+using DevToolz.Library.Documents.Brazilian.Cnpj;
+using DevToolz.Library.Documents.Brazilian.Cnpj.Interfaces;
+using DevToolz.Library.Interfaces;
 
 namespace DevToolz.Library.Test;
 
@@ -7,8 +9,8 @@ public class CnpjTest
     [Fact]
     public void ValidateTest()
     {
-        IValidator validator = new Cnpj();
-        IGenerator generator = new Cnpj();
+        IValidator validator = new CnpjValidator();
+        IGenerator generator = new CnpjGenerator();
 
         Assert.True( validator.IsValid( "72.799.201/0001-01" ) );
         Assert.True( validator.IsValid( "28777566000143" ) );
@@ -26,10 +28,10 @@ public class CnpjTest
     [Fact]
     public void GenerateTest()
     {
-        IGenerator generator = new Cnpj();
-        IValidator validator = new Cnpj();
+        IGenerator generator = new CnpjGenerator();
+        IValidator validator = new CnpjValidator();
 
-        var cnpj = generator.Generate();
+        var cnpj      = generator.Generate();
         var cnpjMasked = generator.Generate( true );
 
         Assert.True( validator.IsValid( cnpj ) );
@@ -59,8 +61,56 @@ public class CnpjTest
     [InlineData( "99999999999999" )]
     public void Validate_ShouldBeFalse_WhenCnpjHasRepeatedDigits( string value )
     {
-        IValidator validator = new Cnpj();
+        IValidator validator = new CnpjValidator();
 
         Assert.False( validator.IsValid( value ) );
+    }
+
+    [Fact]
+    public void MaskedAndUnmasked_ShouldReturnCorrectFormats()
+    {
+        var cnpj = new Cnpj();
+        cnpj.Generate();
+
+        var unmasked = cnpj.Unmasked();
+        var masked   = cnpj.Masked();
+
+        Assert.Equal( 14, unmasked.Length );
+        Assert.True( unmasked.All( char.IsDigit ) );
+        Assert.Matches( @"^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$", masked );
+    }
+
+    [Fact]
+    public void Metadata_BaseDigits_ShouldReturnFirst12Digits()
+    {
+        var cnpj = new Cnpj();
+        cnpj.Generate();
+
+        ICnpjMetadata metadata = cnpj;
+
+        Assert.Equal( 12, metadata.BaseDigits.Length );
+        Assert.Equal( cnpj.Unmasked()[..12], metadata.BaseDigits );
+    }
+
+    [Fact]
+    public void Metadata_FirstVerifyingDigit_ShouldReturnDigitAtIndex12()
+    {
+        var cnpj = new Cnpj();
+        cnpj.Generate();
+
+        ICnpjMetadata metadata = cnpj;
+
+        Assert.Equal( cnpj.Unmasked()[12].ToString(), metadata.FirstVerifyingDigit );
+    }
+
+    [Fact]
+    public void Metadata_SecondVerifyingDigit_ShouldReturnDigitAtIndex13()
+    {
+        var cnpj = new Cnpj();
+        cnpj.Generate();
+
+        ICnpjMetadata metadata = cnpj;
+
+        Assert.Equal( cnpj.Unmasked()[13].ToString(), metadata.SecondVerifyingDigit );
     }
 }
