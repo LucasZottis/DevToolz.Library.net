@@ -1,7 +1,3 @@
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo( "DevToolz.Library.Test" )]
-
 namespace DevToolz.Library.Documents.Brazilian.Shared;
 
 internal static class BrazilianDocumentHelper

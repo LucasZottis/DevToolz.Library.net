@@ -1,6 +1,5 @@
 using DevToolz.Library.Documents.Brazilian.Cnpj;
 using DevToolz.Library.Documents.Brazilian.Cnpj.Interfaces;
-using DevToolz.Library.Interfaces;
 
 namespace DevToolz.Library.Test;
 
@@ -9,8 +8,8 @@ public class CnpjTest
     [Fact]
     public void ValidateTest()
     {
-        IValidator validator = new CnpjValidator();
-        IGenerator generator = new CnpjGenerator();
+        IValidator validator = CnpjFactory.CreateValidator();
+        IGenerator generator = CnpjFactory.CreateGenerator();
 
         Assert.True( validator.IsValid( "72.799.201/0001-01" ) );
         Assert.True( validator.IsValid( "28777566000143" ) );
@@ -28,8 +27,8 @@ public class CnpjTest
     [Fact]
     public void GenerateTest()
     {
-        IGenerator generator = new CnpjGenerator();
-        IValidator validator = new CnpjValidator();
+        IGenerator generator = CnpjFactory.CreateGenerator();
+        IValidator validator = CnpjFactory.CreateValidator();
 
         var cnpj = generator.Generate();
         var cnpjMasked = generator.Generate( true );
@@ -61,7 +60,7 @@ public class CnpjTest
     [InlineData( "99999999999999" )]
     public void Validate_ShouldBeFalse_WhenCnpjHasRepeatedDigits( string value )
     {
-        IValidator validator = new CnpjValidator();
+        IValidator validator = CnpjFactory.CreateValidator();
 
         Assert.False( validator.IsValid( value ) );
     }

@@ -1,6 +1,5 @@
 using DevToolz.Library.Documents.Brazilian.Cpf;
 using DevToolz.Library.Documents.Brazilian.Cpf.Interfaces;
-using DevToolz.Library.Interfaces;
 
 namespace DevToolz.Library.Test;
 
@@ -9,8 +8,8 @@ public class CpfTest
     [Fact]
     public void ValidateTest()
     {
-        IValidator validator = new CpfValidator();
-        IGenerator generator = new CpfGenerator();
+        IValidator validator = CpfFactory.CreateValidator();
+        IGenerator generator = CpfFactory.CreateGenerator();
 
         Assert.True( validator.IsValid( "816.784.690-33" ) );
         Assert.True( validator.IsValid( "38235836033" ) );
@@ -34,7 +33,7 @@ public class CpfTest
     [InlineData( "999.999.999-99" )]
     public void Validate_ShouldReturnFalse_ForRepeatedDigitsPatterns( string cpf )
     {
-        IValidator validator = new CpfValidator();
+        IValidator validator = CpfFactory.CreateValidator();
 
         Assert.False( validator.IsValid( cpf ) );
     }
@@ -42,8 +41,8 @@ public class CpfTest
     [Fact]
     public void GenerateTest()
     {
-        IGenerator generator = new CpfGenerator();
-        IValidator validator = new CpfValidator();
+        IGenerator generator = CpfFactory.CreateGenerator();
+        IValidator validator = CpfFactory.CreateValidator();
 
         var cpf = generator.Generate();
         var cpfMasked = generator.Generate( true );
