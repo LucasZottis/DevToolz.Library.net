@@ -1,4 +1,4 @@
-namespace DevToolz.Library.Crypt.Interfaces;
+namespace DevToolz.Library.Encryption.Interfaces;
 
 public interface ICryptAlgorithm
 {

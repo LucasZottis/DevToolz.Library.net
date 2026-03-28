@@ -1,7 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace DevToolz.Library.Crypt.Algorithms;
+namespace DevToolz.Library.Encryption.Algorithms;
 
 internal static class CryptKeyHelper
 {

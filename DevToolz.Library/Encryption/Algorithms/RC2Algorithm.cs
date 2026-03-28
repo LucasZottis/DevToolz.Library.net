@@ -1,18 +1,18 @@
 using System.Security.Cryptography;
 using System.Text;
-using DevToolz.Library.Crypt.Interfaces;
+using DevToolz.Library.Encryption.Interfaces;
 
-namespace DevToolz.Library.Crypt.Algorithms;
+namespace DevToolz.Library.Encryption.Algorithms;
 
 #pragma warning disable SYSLIB0022
 
-internal sealed class TripleDesAlgorithm : ICryptAlgorithm
+internal sealed class RC2Algorithm : ICryptAlgorithm
 {
     public string Encrypt( string value, string key )
     {
-        using var algorithm = new TripleDESCryptoServiceProvider { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 };
+        using var algorithm = new RC2CryptoServiceProvider { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 };
 
-        algorithm.Key = CryptKeyHelper.DeriveKeyBytes( key, 24 );
+        algorithm.Key = CryptKeyHelper.DeriveKeyBytes( key, 16 );
         algorithm.IV  = CryptKeyHelper.DeriveIVBytes( key, 8 );
 
         var plainBytes = Encoding.UTF8.GetBytes( value );
@@ -29,9 +29,9 @@ internal sealed class TripleDesAlgorithm : ICryptAlgorithm
 
     public string Decrypt( string value, string key )
     {
-        using var algorithm = new TripleDESCryptoServiceProvider { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 };
+        using var algorithm = new RC2CryptoServiceProvider { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 };
 
-        algorithm.Key = CryptKeyHelper.DeriveKeyBytes( key, 24 );
+        algorithm.Key = CryptKeyHelper.DeriveKeyBytes( key, 16 );
         algorithm.IV  = CryptKeyHelper.DeriveIVBytes( key, 8 );
 
         var cipherBytes = Convert.FromBase64String( value );

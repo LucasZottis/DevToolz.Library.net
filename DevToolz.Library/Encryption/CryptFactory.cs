@@ -1,8 +1,7 @@
-using DevToolz.Library.Crypt.Algorithms;
-using DevToolz.Library.Crypt.Interfaces;
-using DevToolz.Library.Enums;
+using DevToolz.Library.Encryption.Algorithms;
+using DevToolz.Library.Encryption.Interfaces;
 
-namespace DevToolz.Library.Crypt;
+namespace DevToolz.Library.Encryption;
 
 public static class CryptFactory
 {

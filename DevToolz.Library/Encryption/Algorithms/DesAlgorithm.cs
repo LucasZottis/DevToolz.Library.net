@@ -1,20 +1,19 @@
 using System.Security.Cryptography;
 using System.Text;
-using DevToolz.Library.Crypt.Interfaces;
+using DevToolz.Library.Encryption.Interfaces;
 
-namespace DevToolz.Library.Crypt.Algorithms;
+namespace DevToolz.Library.Encryption.Algorithms;
 
-internal sealed class AesAlgorithm : ICryptAlgorithm
+#pragma warning disable SYSLIB0022
+
+internal sealed class DesAlgorithm : ICryptAlgorithm
 {
     public string Encrypt( string value, string key )
     {
-        using var algorithm = System.Security.Cryptography.Aes.Create();
+        using var algorithm = new DESCryptoServiceProvider { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 };
 
-        algorithm.Mode    = CipherMode.CBC;
-        algorithm.Padding = PaddingMode.PKCS7;
-        algorithm.KeySize = 256;
-        algorithm.Key     = CryptKeyHelper.DeriveKeyBytes( key, 32 );
-        algorithm.IV      = CryptKeyHelper.DeriveIVBytes( key, 16 );
+        algorithm.Key = CryptKeyHelper.DeriveKeyBytes( key, 8 );
+        algorithm.IV  = CryptKeyHelper.DeriveIVBytes( key, 8 );
 
         var plainBytes = Encoding.UTF8.GetBytes( value );
         var encryptor  = algorithm.CreateEncryptor();
@@ -30,13 +29,10 @@ internal sealed class AesAlgorithm : ICryptAlgorithm
 
     public string Decrypt( string value, string key )
     {
-        using var algorithm = System.Security.Cryptography.Aes.Create();
+        using var algorithm = new DESCryptoServiceProvider { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 };
 
-        algorithm.Mode    = CipherMode.CBC;
-        algorithm.Padding = PaddingMode.PKCS7;
-        algorithm.KeySize = 256;
-        algorithm.Key     = CryptKeyHelper.DeriveKeyBytes( key, 32 );
-        algorithm.IV      = CryptKeyHelper.DeriveIVBytes( key, 16 );
+        algorithm.Key = CryptKeyHelper.DeriveKeyBytes( key, 8 );
+        algorithm.IV  = CryptKeyHelper.DeriveIVBytes( key, 8 );
 
         var cipherBytes = Convert.FromBase64String( value );
         var decryptor   = algorithm.CreateDecryptor();
@@ -48,3 +44,5 @@ internal sealed class AesAlgorithm : ICryptAlgorithm
         return reader.ReadToEnd();
     }
 }
+
+#pragma warning restore SYSLIB0022

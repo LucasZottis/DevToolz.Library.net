@@ -1,5 +1,5 @@
-using DevToolz.Library.Crypt;
-using DevToolz.Library.Crypt.Interfaces;
+using DevToolz.Library.Encryption;
+using DevToolz.Library.Encryption.Interfaces;
 
 namespace DevToolz.Library;
 
