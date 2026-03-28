@@ -6,8 +6,6 @@ name: Publicar pacote NuGet
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   Testar:
@@ -32,7 +30,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-      
+
     - name: Configurar .NET
       uses: actions/setup-dotnet@v4
       with:

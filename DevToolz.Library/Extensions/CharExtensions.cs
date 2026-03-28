@@ -199,6 +199,8 @@ public static class CharExtensions
         return true;
     }
 
+    //public static bool IsWhiteSpace(this char)
+
     /// <summary>
     /// Verifica se o caractere é uma letra.
     /// </summary>

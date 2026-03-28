@@ -1,33 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Text;
 
 namespace DevToolz.Library.Extensions;
 
 public static class StringExtensions
 {
     public static readonly char[] SpecialCharacters = new char[] { '/', '*', '-', '+', ',', '.', '!', '@', '#', '$', '%', '¬', '&', '(', ')', '_', '+', '\\', '|', '[', ']', '{', '}', ';', ':', '<', '>' };
-
-    private static string ToCurrency( string value )
-    {
-        int commaIndex = value.IndexOf( ',' ) + 1;
-        string returnValue = value;
-
-        if ( commaIndex > -1 )
-        {
-            returnValue = value.Substring( 0, commaIndex );
-
-            for ( int i = commaIndex; i < commaIndex + 2; i++ )
-                returnValue += value[ i ].ToString();
-
-            return returnValue;
-        }
-
-        returnValue += ",";
-
-        for ( int i = 0; i < 2; i++ )
-            returnValue += "0";
-
-        return returnValue;
-    }
 
     /// <summary>
     /// Método que verifica se um string está vazio.
@@ -42,7 +20,7 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="values">Vetor com cadeias de caracteres que serão verificados.</Param>
     /// <returns>Retorna true se estiver nulo, vazio ou tem apenas espaços.</returns>
-    public static bool IsEmpty( this string[] values )
+    public static bool IsEmpty( [NotNullWhen( false )] this string[] values )
     {
         if ( values.Length == 0 )
             return true;
@@ -223,11 +201,7 @@ public static class StringExtensions
     /// <returns>Retorna true se conter apenas números.</returns>
     public static bool IsAllNumbers( this string value )
     {
-        for ( int i = 0; i < value.Length; i++ )
-            if ( !value[ i ].IsNumber() )
-                return false;
-
-        return true;
+        return value.ToCharArray().IsNumber();
     }
 
     /// <summary>
@@ -236,11 +210,18 @@ public static class StringExtensions
     /// <Param name="value">Valor string.</Param>
     /// <returns>Retorna um value bool.</returns>
     public static bool ToBoolean( this string value )
-        => value.IsNotEmpty() &&
-            ( value.ToLower().IsEqual( "s" ) ||
-                value.IsEqual( "1" ) ||
-                value.ToLower().IsEqual( "letrasMinusculas" ) ||
-                value.ToLower().IsEqual( "true" ) );
+    {
+        if ( value.IsNotEmpty() )
+        {
+            if ( value.IsEqual( "1" ) )
+                return true;
+
+            if ( value.ToLower().IsEqual( "true" ) )
+                return true;
+        }
+
+        return false;
+    }
 
     /// <summary>
     /// Converte um string To byte.
@@ -253,7 +234,7 @@ public static class StringExtensions
             throw new ArgumentNullException( "Valor informado não pode ser nulo" );
         else if ( value.IsGreaterThan( 3 ) )
             throw new ArgumentException( "String informado tem mais que 3 caracteres e não pode ser convertida To byte." );
-        else if ( !value.ToCharArray().IsNumber() )
+        else if ( !value.IsAllNumbers() )
             throw new ArgumentException( "String informado não é um value que pode ser convertido." );
 
         if ( byte.Parse( value, CultureInfo.CurrentCulture ) > byte.MaxValue )
@@ -302,19 +283,26 @@ public static class StringExtensions
     /// <returns>Retorna um value decimal.</returns>
     public static decimal ToDecimal( this string value )
     {
+        if ( value.IsEmpty() )
+            return 0m;
+
         value = value.Replace( ",", "." );
 
-        if ( value.IsNotEmpty() )
-            return decimal.Parse( value, CultureInfo.InvariantCulture );
+        if ( decimal.TryParse( value, CultureInfo.InvariantCulture, out var result ) )
+            return result;
 
         return 0m;
     }
 
-    // TODO: Verificação se tem apenas números.
     public static double ToDouble( this string value )
     {
-        if ( value.IsNotEmpty() )
-            return double.Parse( value, CultureInfo.CurrentCulture );
+        if ( value.IsEmpty() )
+            return 0;
+
+        value = value.Replace( ",", "." );
+
+        if ( double.TryParse( value, CultureInfo.InvariantCulture, out var result ) )
+            return result;
 
         return 0;
     }
@@ -332,14 +320,32 @@ public static class StringExtensions
     // TODO: Verificação se tem apenas números.
     public static float ToFloat( this string value )
     {
-        if ( value.IsNotEmpty() )
-            return float.Parse( value, CultureInfo.CurrentCulture );
+        if ( value.IsEmpty() )
+            return 0f;
+
+        value = value.Replace( ",", "." );
+
+        if ( float.TryParse( value, CultureInfo.InvariantCulture, out var result ) )
+            return result;
+
+        return 0f;
+    }
+
+    /// <summary>
+    /// Converte de string To Int.
+    /// </summary>
+    /// <Param name="value">Valor a ser convertido.</Param>
+    /// <returns>Retorna um value do tipo int.</returns>
+    public static int ToInt( this string value )
+    {
+        if ( value.IsEmpty() )
+            return 0;
+
+        if ( int.TryParse( value, out var result ) )
+            return result;
 
         return 0;
     }
-
-    public static int ToInt( this string value )
-        => value.IsNotEmpty() ? int.Parse( value ) : 0;
 
     /// <summary>
     /// Converte de string To long.
@@ -347,7 +353,15 @@ public static class StringExtensions
     /// <Param name="value">Valor a ser convertido.</Param>
     /// <returns>Retorna um value do tipo long.</returns>
     public static long ToLong( this string value )
-        => value.IsNotEmpty() ? long.Parse( value ) : 0;
+    {
+        if ( value.IsEmpty() )
+            return 0L;
+
+        if (long.TryParse(value, out var result ) )
+            return result;
+
+        return 0L;
+    }
 
     /// <summary>
     /// Converte um string To o tipo short.
@@ -355,25 +369,15 @@ public static class StringExtensions
     /// <Param name="value">Valor a ser convertido.</Param>
     /// <returns>Retorna um value do tipo short.</returns>
     public static short ToShort( this string value )
-        => value.IsNotEmpty() ? short.Parse( value ) : 0.ToShort();
+    {
+        if ( value.IsEmpty() )
+            return 0;
 
-    //public static string FormatTo( this string value, FormatType formatType )
-    //{
-    //    switch ( formatType )
-    //    {
-    //        case FormatType.Nenhuma:
-    //            return value;
-    //        case FormatType.Monetario:
-    //        {
-    //            if ( value.IsEmpty() )
-    //                return DefaultValues.ValorPadraoMonetario.ToString( "C2" );
+        if ( short.TryParse( value, out var result ) )
+            return result;
 
-    //            return $"R$ {ToCurrency( value )}";
-    //        }
-    //        default:
-    //            return value;
-    //    }
-    //}
+        return 0;
+    }
 
     /// <summary>
     /// Verifica se a string informada tem apenas espaços.
@@ -409,14 +413,6 @@ public static class StringExtensions
     public static bool IsNull( [NotNullWhen( false )] this string value )
         => value == null;
 
-    /// <summary>
-    /// Verifica se a cadeia de caracteres está vazia.
-    /// </summary>
-    /// <Param name="value">Cadeia de caracteres a ser verificada.</Param>
-    /// <returns>Retorna true se estiver vazia.</returns>
-    //public static bool IsEmpty( this string value )
-    //    => value == string.Empty;
-
     public static string RemovePeriods( this string value )
         => value.Replace( ".", "" );
 
@@ -442,4 +438,21 @@ public static class StringExtensions
             .RemovePeriods()
             .RemoverUnderline()
             .RemoveComma();
+  
+    public static string RemoveAccents( this string value )
+    {
+        if ( value.IsEmpty() )
+            return value;
+
+        string normalizedString = value.Normalize( NormalizationForm.FormD );
+        StringBuilder stringBuilder = new();
+
+        foreach ( char character in normalizedString )
+            if ( CharUnicodeInfo.GetUnicodeCategory( character ) != UnicodeCategory.NonSpacingMark )
+                stringBuilder.Append( character );
+
+        return stringBuilder
+            .ToString()
+            .Normalize( NormalizationForm.FormC );
+    }
 }

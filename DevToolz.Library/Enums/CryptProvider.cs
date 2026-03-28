@@ -23,5 +23,10 @@ public enum CryptProvider
     /// <summary>
     /// Representa a classe base (TripleDES - Triple Data Encryption Standard).
     /// </summary>
-    TripleDES
+    TripleDES,
+
+    /// <summary>
+    /// Representa o algoritmo AES (Advanced Encryption Standard) com chave de 256 bits.
+    /// </summary>
+    Aes
 }
