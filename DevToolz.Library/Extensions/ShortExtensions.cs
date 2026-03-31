@@ -4,7 +4,7 @@
     {
         public static char ToChar( this short valor )
         {
-            if ( valor.Between( 0, 10 ) )
+            if ( !valor.Between( 0, 9 ) )
                 throw new ArgumentException( "Valor informado não é um número. Valor deve ser um número de 0 à 9." );
 
             return valor.ToString().ToChar();

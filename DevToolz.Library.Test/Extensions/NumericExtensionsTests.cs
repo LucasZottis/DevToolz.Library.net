@@ -56,4 +56,96 @@ public class NumericExtensionsTests
         Assert.True('\b'.IsReturnChar());
         Assert.False('\n'.IsReturnChar());
     }
+
+    [Theory]
+    [InlineData(0, '0')]
+    [InlineData(5, '5')]
+    [InlineData(9, '9')]
+    public void IntToChar_WithValidDigit_ReturnsExpectedChar( int value, char expected )
+        => Assert.Equal( expected, value.ToChar() );
+
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(10)]
+    [InlineData(100)]
+    public void IntToChar_WithInvalidValue_ThrowsArgumentException( int value )
+        => Assert.Throws<ArgumentException>( () => value.ToChar() );
+
+    [Theory]
+    [InlineData(0, '0')]
+    [InlineData(5, '5')]
+    [InlineData(9, '9')]
+    public void LongToChar_WithValidDigit_ReturnsExpectedChar( long value, char expected )
+        => Assert.Equal( expected, value.ToChar() );
+
+    [Theory]
+    [InlineData(-1L)]
+    [InlineData(10L)]
+    public void LongToChar_WithInvalidValue_ThrowsArgumentException( long value )
+        => Assert.Throws<ArgumentException>( () => value.ToChar() );
+
+    [Theory]
+    [InlineData((short)0, '0')]
+    [InlineData((short)5, '5')]
+    [InlineData((short)9, '9')]
+    public void ShortToChar_WithValidDigit_ReturnsExpectedChar( short value, char expected )
+        => Assert.Equal( expected, value.ToChar() );
+
+    [Theory]
+    [InlineData((short)-1)]
+    [InlineData((short)10)]
+    public void ShortToChar_WithInvalidValue_ThrowsArgumentException( short value )
+        => Assert.Throws<ArgumentException>( () => value.ToChar() );
+
+    [Theory]
+    [InlineData((byte)0, '0')]
+    [InlineData((byte)5, '5')]
+    [InlineData((byte)9, '9')]
+    public void ByteToChar_WithValidDigit_ReturnsExpectedChar( byte value, char expected )
+        => Assert.Equal( expected, value.ToChar() );
+
+    [Fact]
+    public void ByteToChar_WithInvalidValue_ThrowsArgumentException()
+        => Assert.Throws<ArgumentException>( () => ((byte)10).ToChar() );
+
+    [Theory]
+    [InlineData(0.0, '0')]
+    [InlineData(5.0, '5')]
+    [InlineData(9.0, '9')]
+    public void DoubleToChar_WithValidDigit_ReturnsExpectedChar( double value, char expected )
+        => Assert.Equal( expected, value.ToChar() );
+
+    [Theory]
+    [InlineData(-1.0)]
+    [InlineData(10.0)]
+    public void DoubleToChar_WithInvalidValue_ThrowsArgumentException( double value )
+        => Assert.Throws<ArgumentException>( () => value.ToChar() );
+
+    [Theory]
+    [InlineData(0f, '0')]
+    [InlineData(5f, '5')]
+    [InlineData(9f, '9')]
+    public void FloatToChar_WithValidDigit_ReturnsExpectedChar( float value, char expected )
+        => Assert.Equal( expected, value.ToChar() );
+
+    [Theory]
+    [InlineData(-1f)]
+    [InlineData(10f)]
+    public void FloatToChar_WithInvalidValue_ThrowsArgumentException( float value )
+        => Assert.Throws<ArgumentException>( () => value.ToChar() );
+
+    [Fact]
+    public void DecimalToChar_WithValidDigit_ReturnsExpectedChar()
+    {
+        Assert.Equal( '0', 0m.ToChar() );
+        Assert.Equal( '5', 5m.ToChar() );
+        Assert.Equal( '9', 9m.ToChar() );
+    }
+
+    [Fact]
+    public void DecimalToChar_WithInvalidValue_ThrowsArgumentException()
+    {
+        Assert.Throws<ArgumentException>( () => (-1m).ToChar() );
+        Assert.Throws<ArgumentException>( () => 10m.ToChar() );
+    }
 }

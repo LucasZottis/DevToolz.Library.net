@@ -21,6 +21,6 @@ public static class EnumExtensions
         if ( attributes.Length > 0 )
             return attributes[ 0 ].Description;
 
-        return string.Empty;
+        return value.ToString();
     }
 }

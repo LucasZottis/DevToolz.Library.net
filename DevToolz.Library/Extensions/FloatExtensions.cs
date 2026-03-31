@@ -32,7 +32,7 @@ public static class FloatExtensions
     /// <returns>Retorna um value do tipo char.</returns>
     public static char ToChar( this float value )
     {
-        if ( value.Between( 0, 10 ) )
+        if ( !value.Between( 0, 9 ) )
             throw new ArgumentException( "value informado não é um número. value deve ser um número de 0 à 9." );
 
         return value.ToString().ToChar();
