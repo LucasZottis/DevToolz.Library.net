@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace DevToolz.Library;
+namespace DevToolz.Library.LetterCounter;
 
 public class TextLetterCounter
 {
@@ -9,11 +9,11 @@ public class TextLetterCounter
         'a', 'e', 'i', 'o', 'u'
     };
 
-    public TextCountResult Count( string? text, string? textToCountRepetitions = null )
+    public TextLetterCountResult Count( string? text, string? textToCountRepetitions = null )
     {
         text ??= string.Empty;
 
-        var result = new TextCountResult
+        var result = new TextLetterCountResult
         {
             TotalCharacters = text.Length,
             TotalSpaces = text.Count( c => c == ' ' ),

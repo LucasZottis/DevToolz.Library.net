@@ -1,3 +1,5 @@
+using DevToolz.Library.Documents.Brazilian.Cnpj;
+
 namespace DevToolz.Library.Documents.Brazilian.Shared;
 
 internal static class BrazilianDocumentHelper
@@ -13,6 +15,17 @@ internal static class BrazilianDocumentHelper
 
     public static string MaskCnpj( string unmasked )
         => unmasked.Insert( 2, "." ).Insert( 6, "." ).Insert( 10, "/" ).Insert( 15, "-" );
+
+    public static CnpjFormat DetectCnpjFormat( string value )
+    {
+        var unmasked = RemoveMask( value );
+        if ( unmasked.Length < 12 )
+            return CnpjFormat.Numeric;
+
+        return unmasked[ ..12 ].Any( c => c is >= 'A' and <= 'Z' )
+            ? CnpjFormat.Alphanumeric
+            : CnpjFormat.Numeric;
+    }
 
     public static string ComputeVerifyingDigit( int startCounter, string digits, Func<int, int> counterStep )
     {

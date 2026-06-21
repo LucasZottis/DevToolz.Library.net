@@ -18,27 +18,27 @@ public static class DateTimeExtensions
         => value.ToString( "dd/MM/yyyy" );
 
     public static DateTime FirstDayOfTheWeek( this DateTime value )
-        => DateTime.Now.AddDays( ( byte ) value.DayOfWeek * -1 );
+        => value.AddDays( ( byte ) value.DayOfWeek * -1 );
 
     public static DateTime LastDayOfTheWeek( this DateTime value )
     {
         switch ( value.DayOfWeek )
         {
             case DayOfWeek.Sunday:
-                return DateTime.Now.AddDays( 6 );
+                return value.AddDays( 6 );
             case DayOfWeek.Monday:
-                return DateTime.Now.AddDays( 5 );
+                return value.AddDays( 5 );
             case DayOfWeek.Tuesday:
-                return DateTime.Now.AddDays( 4 );
+                return value.AddDays( 4 );
             case DayOfWeek.Wednesday:
-                return DateTime.Now.AddDays( 3 );
+                return value.AddDays( 3 );
             case DayOfWeek.Thursday:
-                return DateTime.Now.AddDays( 2 );
+                return value.AddDays( 2 );
             case DayOfWeek.Friday:
-                return DateTime.Now.AddDays( 1 );
+                return value.AddDays( 1 );
             case DayOfWeek.Saturday:
             default:
-                return DateTime.Now.AddDays( 0 );
+                return value.AddDays( 0 );
         }
     }
 

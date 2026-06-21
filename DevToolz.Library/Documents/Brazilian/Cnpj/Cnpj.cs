@@ -5,10 +5,12 @@ namespace DevToolz.Library.Documents.Brazilian.Cnpj;
 
 public sealed class Cnpj : ICnpjMetadata, ICnpjData
 {
-    private static readonly CnpjValidator _validator = new();
-    private static readonly CnpjGenerator _generator = new();
+    private static readonly ICnpjValidator _validator = CnpjFactory.CreateValidator();
+    private static readonly ICnpjGenerator _generator = CnpjFactory.CreateGenerator();
 
     private string _value = string.Empty;
+    private readonly CnpjFormat _format;
+
     private string Digits
         => BrazilianDocumentHelper.RemoveMask( _value );
 
@@ -25,18 +27,30 @@ public sealed class Cnpj : ICnpjMetadata, ICnpjData
 
     public Cnpj( string cnpj )
     {
-        _value = cnpj;
+        _value  = cnpj;
+        _format = BrazilianDocumentHelper.DetectCnpjFormat( cnpj );
     }
 
-    public bool IsValid() 
-        => _validator.IsValid( _value );
+    public Cnpj( CnpjFormat format )
+    {
+        _format = format;
+    }
 
-    public string Generate() 
-        => _value = _generator.Generate();
+    public Cnpj( string cnpj, CnpjFormat format )
+    {
+        _value  = cnpj;
+        _format = format;
+    }
 
-    public string Masked() 
+    public bool IsValid()
+        => _validator.IsValid( _value, _format );
+
+    public string Generate()
+        => _value = _generator.Generate( _format );
+
+    public string Masked()
         => BrazilianDocumentHelper.MaskCnpj( Digits );
 
-    public string Unmasked() 
+    public string Unmasked()
         => Digits;
 }

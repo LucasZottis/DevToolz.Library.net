@@ -1,6 +1,6 @@
-namespace DevToolz.Library;
+namespace DevToolz.Library.LetterCounter;
 
-public class TextCountResult
+public class TextLetterCountResult
 {
     public int TotalCharacters { get; set; }
     public int TotalCharactersWithoutSpaces { get; set; }
