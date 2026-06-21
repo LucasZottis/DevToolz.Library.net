@@ -1,13 +1,22 @@
+using DevToolz.Library.Documents.Brazilian.Cnpj.Interfaces;
 using DevToolz.Library.Documents.Brazilian.Shared;
 
 namespace DevToolz.Library.Documents.Brazilian.Cnpj;
 
-internal sealed class CnpjGenerator : IGenerator
+internal sealed class CnpjGenerator : ICnpjGenerator
 {
+    private const string AlphanumericChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
     public string Generate()
         => Generate( false );
 
     public string Generate( bool masked )
+        => Generate( masked, CnpjFormat.Numeric );
+
+    public string Generate( CnpjFormat format )
+        => Generate( false, format );
+
+    public string Generate( bool masked, CnpjFormat format )
     {
         string digits;
 
@@ -16,7 +25,11 @@ internal sealed class CnpjGenerator : IGenerator
             digits = string.Empty;
 
             for ( int i = 0; i < 12; i++ )
-                digits += Random.Shared.Next( 0, 10 ).ToString();
+            {
+                digits += format == CnpjFormat.Alphanumeric
+                    ? AlphanumericChars[ Random.Shared.Next( AlphanumericChars.Length ) ].ToString()
+                    : Random.Shared.Next( 0, 10 ).ToString();
+            }
         }
         while ( BrazilianDocumentHelper.IsRepeatedDigitPattern( digits ) );
 
