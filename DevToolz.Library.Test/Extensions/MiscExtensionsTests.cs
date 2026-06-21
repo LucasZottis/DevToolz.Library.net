@@ -30,6 +30,13 @@ public class MiscExtensionsTests
     }
 
     [Fact]
+    public void EnumExtensions_GetDescription_EnumOverload_WithoutAttribute_ReturnsName()
+    {
+        Assert.Equal("Ativo", ((Enum)Status.Active).GetDescription());
+        Assert.Equal(nameof(Status.Inactive), ((Enum)Status.Inactive).GetDescription());
+    }
+
+    [Fact]
     public void DateTimeAndTimeSpanExtensions_FormatExpectedValues()
     {
         var date = new DateTime(2024, 5, 7, 13, 45, 10);
