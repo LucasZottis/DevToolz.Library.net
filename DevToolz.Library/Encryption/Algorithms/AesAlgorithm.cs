@@ -1,11 +1,19 @@
 using System.Security.Cryptography;
-using System.Text;
 using DevToolz.Library.Encryption.Interfaces;
 
 namespace DevToolz.Library.Encryption.Algorithms;
 
 internal sealed class AesAlgorithm : ICryptAlgorithm
 {
+    private readonly string _keySalt;
+    private readonly string _ivSalt;
+
+    internal AesAlgorithm( string keySalt, string ivSalt )
+    {
+        _keySalt = keySalt;
+        _ivSalt  = ivSalt;
+    }
+
     public string Encrypt( string value, string key )
     {
         using var algorithm = System.Security.Cryptography.Aes.Create();
@@ -13,19 +21,10 @@ internal sealed class AesAlgorithm : ICryptAlgorithm
         algorithm.Mode    = CipherMode.CBC;
         algorithm.Padding = PaddingMode.PKCS7;
         algorithm.KeySize = 256;
-        algorithm.Key     = CryptKeyHelper.DeriveKeyBytes( key, 32 );
-        algorithm.IV      = CryptKeyHelper.DeriveIVBytes( key, 16 );
+        algorithm.Key     = CryptKeyHelper.DeriveKeyBytes( key, 32, _keySalt );
+        algorithm.IV      = CryptKeyHelper.DeriveIVBytes( key, 16, _ivSalt );
 
-        var plainBytes = Encoding.UTF8.GetBytes( value );
-        var encryptor  = algorithm.CreateEncryptor();
-
-        using var memoryStream = new MemoryStream();
-        using var cryptoStream = new CryptoStream( memoryStream, encryptor, CryptoStreamMode.Write );
-
-        cryptoStream.Write( plainBytes, 0, plainBytes.Length );
-        cryptoStream.FlushFinalBlock();
-
-        return Convert.ToBase64String( memoryStream.ToArray() );
+        return CryptStreamHelper.Encrypt( algorithm, value );
     }
 
     public string Decrypt( string value, string key )
@@ -35,16 +34,9 @@ internal sealed class AesAlgorithm : ICryptAlgorithm
         algorithm.Mode    = CipherMode.CBC;
         algorithm.Padding = PaddingMode.PKCS7;
         algorithm.KeySize = 256;
-        algorithm.Key     = CryptKeyHelper.DeriveKeyBytes( key, 32 );
-        algorithm.IV      = CryptKeyHelper.DeriveIVBytes( key, 16 );
+        algorithm.Key     = CryptKeyHelper.DeriveKeyBytes( key, 32, _keySalt );
+        algorithm.IV      = CryptKeyHelper.DeriveIVBytes( key, 16, _ivSalt );
 
-        var cipherBytes = Convert.FromBase64String( value );
-        var decryptor   = algorithm.CreateDecryptor();
-
-        using var memoryStream = new MemoryStream( cipherBytes );
-        using var cryptoStream = new CryptoStream( memoryStream, decryptor, CryptoStreamMode.Read );
-        using var reader       = new StreamReader( cryptoStream, Encoding.UTF8 );
-
-        return reader.ReadToEnd();
+        return CryptStreamHelper.Decrypt( algorithm, value );
     }
 }
