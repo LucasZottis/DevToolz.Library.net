@@ -188,12 +188,12 @@ email.ValidateEmailDomain( "usuario@exemplo.com.br" ); // true
 
 ## Criptografia
 
-Cinco algoritmos simétricos com entrada e saída em Base64.
+Cinco algoritmos simétricos com entrada e saída em Base64. A derivação de chave usa PBKDF2-SHA256 com salts configuráveis — dados criptografados com um salt só podem ser descriptografados com o mesmo salt.
 
 ### `CryptProvider`
 
 ```csharp
-CryptProvider.Aes        // AES-256 (recomendado)
+CryptProvider.Aes
 CryptProvider.Rijndael
 CryptProvider.TripleDES
 CryptProvider.DES
@@ -203,20 +203,30 @@ CryptProvider.RC2
 ### `Crypt`
 
 ```csharp
+// Usa salts padrão da biblioteca
 var crypt = new Crypt();
 
-string encrypted = crypt.Encrypt( "dados sensíveis", "chave16caracteres", CryptProvider.Aes );
-string decrypted = crypt.Decrypt( encrypted, "chave16caracteres", CryptProvider.Aes );
+// Usa salts personalizados
+var crypt = new Crypt( keySalt: "minha-aplicacao.key", ivSalt: "minha-aplicacao.iv" );
+
+string encrypted = crypt.Encrypt( "dados sensíveis", "minhaChave", CryptProvider.Aes );
+string decrypted = crypt.Decrypt( encrypted, "minhaChave", CryptProvider.Aes );
 ```
 
 ### `CryptFactory` + injeção de algoritmo
 
 ```csharp
-ICryptAlgorithm algoritmo = CryptFactory.Create( CryptProvider.TripleDES );
-var crypt = new Crypt( algoritmo );
+ICryptAlgorithm algoritmo = CryptFactory.Create( CryptProvider.Aes );
+// ou com salts personalizados:
+ICryptAlgorithm algoritmo = CryptFactory.Create( CryptProvider.Aes, "minha-aplicacao.key", "minha-aplicacao.iv" );
 
-string encrypted = crypt.Encrypt( "texto", "chave" );
+var crypt = new Crypt( algoritmo );
+string encrypted = crypt.Encrypt( "texto", "chave", CryptProvider.Aes );
 ```
+
+### Compatibilidade com versões anteriores
+
+`Rijndael`, `DES`, `RC2` e `TripleDES` descriptografam automaticamente dados gerados pela versão anterior da biblioteca, sem necessidade de migração.
 
 ---
 
