@@ -12,7 +12,7 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="value">Valor que será verificado.</Param>
     /// <returns>Retorna true se estiver nulo, vazio ou tem apenas espaços.</returns>
-    public static bool IsEmpty( [NotNullWhen( false )] this string value )
+    public static bool IsEmpty( [NotNullWhen( false )] this string? value )
         => value.IsNull() || value == string.Empty || value.IsAllWhiteSpaces();
 
     /// <summary>
@@ -20,9 +20,9 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="values">Vetor com cadeias de caracteres que serão verificados.</Param>
     /// <returns>Retorna true se estiver nulo, vazio ou tem apenas espaços.</returns>
-    public static bool IsEmpty( [NotNullWhen( false )] this string[] values )
+    public static bool IsEmpty( [NotNullWhen( false )] this string[]? values )
     {
-        if ( values.Length == 0 )
+        if ( values!.Length == 0 )
             return true;
 
         foreach ( string value in values )
@@ -191,7 +191,7 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="value"></Param>
     /// <returns>Retorna true se não estiver vazia, nula ou só com espaços em branco.</returns>
-    public static bool IsNotEmpty( [NotNullWhen( true )] this string value )
+    public static bool IsNotEmpty( [NotNullWhen( true )] this string? value )
         => !value.IsEmpty();
 
     /// <summary>
@@ -384,7 +384,7 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="value">String a ser verificada.</Param>
     /// <returns>Retorna true se só tiver espaços.</returns>
-    public static bool IsAllWhiteSpaces( [NotNullWhen( false )] this string value )
+    public static bool IsAllWhiteSpaces( [NotNullWhen( false )] this string? value )
     {
         if ( value.IsNull() || value == string.Empty )
             return true;
@@ -410,7 +410,7 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="value">Cadeia de caracteres a ser verificada.</Param>
     /// <returns>Retorna true se estiver nula.</returns>
-    public static bool IsNull( [NotNullWhen( false )] this string value )
+    public static bool IsNull( [NotNullWhen( false )] this string? value )
         => value == null;
 
     public static string RemovePeriods( this string value )

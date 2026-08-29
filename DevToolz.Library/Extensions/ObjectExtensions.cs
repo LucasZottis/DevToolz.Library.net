@@ -12,9 +12,9 @@ public static class ObjectExtensions
     //    return modelReturn;
     //}
 
-    public static bool IsNull( [NotNullWhen( false )] this object source )
+    public static bool IsNull( [NotNullWhen( false )] this object? source )
         => source == null;
 
-    public static bool IsNotNull( [NotNullWhen( true )] this object source )
+    public static bool IsNotNull( [NotNullWhen( true )] this object? source )
         => source != null;
 }
