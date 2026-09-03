@@ -1,4 +1,6 @@
-﻿namespace DevToolz.Library.Extensions;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace DevToolz.Library.Extensions;
 
 public static class DoubleExtensions
 {
@@ -184,12 +186,30 @@ public static class DoubleExtensions
         return value > menorValor && value < maiorValor;
     }
 
+    public static bool IsEqual( this double? value, decimal comTotiveValue )
+        => value.HasValue && value.Value == comTotiveValue.ToDouble();
+
+    public static bool IsEqual( this double? value, double comTotiveValue )
+        => value.HasValue && value.Value == comTotiveValue;
+
+    public static bool IsEqual( this double? value, int comTotiveValue )
+        => value.HasValue && value.Value == comTotiveValue;
+
     public static bool IsEqual( this double value, decimal comTotiveValue )
-        => value == comTotiveValue.ToDouble();
+        => IsEqual( new double?( value ), comTotiveValue );
 
     public static bool IsEqual( this double value, double comTotiveValue )
-        => value == comTotiveValue;
+        => IsEqual( new double?( value ), comTotiveValue );
 
     public static bool IsEqual( this double value, int comTotiveValue )
-        => value == comTotiveValue;
+        => IsEqual( new double?( value ), comTotiveValue );
+
+    /// <summary>
+    /// Verificar se um valor é menor ou igual a outro valor informado.
+    /// </summary>
+    /// <param name="value">Valor verificado.</param>
+    /// <param name="comTotiveValue">Valor de referência.</param>
+    /// <returns>Retorna true se o valor for menor ou igual ao valor de referência.</returns>
+    public static bool IsLessThanOrEqual( [NotNullWhen(true)] this double? value, double comTotiveValue )
+        => value.HasValue && value.Value <= comTotiveValue;
 }
