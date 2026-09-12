@@ -142,7 +142,7 @@ public static class IntExtensions
     /// Verifica se um value é IsEqual ao outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem iguais.</returns>
     public static bool IsEqual( this int value, byte valorVerificador )
         => value == valorVerificador.ToInt();
@@ -151,7 +151,7 @@ public static class IntExtensions
     /// Verifica se um value é IsEqual ao outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem iguais.</returns>
     public static bool IsEqual( this int value, double valorVerificador )
         => value == valorVerificador.ToInt();
@@ -160,7 +160,7 @@ public static class IntExtensions
     /// Verifica se um value é IsEqual ao outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem iguais.</returns>
     public static bool IsEqual( this int value, float valorVerificador )
         => value == valorVerificador.ToInt();
@@ -169,7 +169,7 @@ public static class IntExtensions
     /// Verifica se um value é IsEqual ao outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem iguais.</returns>
     public static bool IsEqual( this int value, int valorVerificador )
         => value == valorVerificador;
@@ -178,7 +178,7 @@ public static class IntExtensions
     /// Verifica se um value é IsNotEqual do outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem diferentes.</returns>
     public static bool IsNotEqual( this int value, byte valorVerificador )
         => value != valorVerificador.ToInt();
@@ -187,7 +187,7 @@ public static class IntExtensions
     /// Verifica se um value é IsNotEqual do outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem diferentes.</returns>
     public static bool IsNotEqual( this int value, char valorVerificador )
         => value != valorVerificador.ToInt();
@@ -196,7 +196,7 @@ public static class IntExtensions
     /// Verifica se um value é IsNotEqual do outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem diferentes.</returns>
     public static bool IsNotEqual( this int value, double valorVerificador )
         => value != valorVerificador.ToInt();
@@ -205,7 +205,7 @@ public static class IntExtensions
     /// Verifica se um value é IsNotEqual do outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem diferentes.</returns>
     public static bool IsNotEqual( this int value, float valorVerificador )
         => value != valorVerificador.ToInt();
@@ -214,13 +214,13 @@ public static class IntExtensions
     /// Verifica se um value é IsNotEqual do outro.
     /// </summary>
     /// <Param name="value">Inteiro a ser verficado.</Param>
-    /// <Param name="valorVerificador">value comTodor.</Param>
+    /// <Param name="valorVerificador">value de comparação.</Param>
     /// <returns>Retorna true se forem diferentes.</returns>
     public static bool IsNotEqual( this int value, int valorVerificador )
         => value != valorVerificador;
 
     /// <summary>
-    /// Verifica se o value é maior que o value comTodor.
+    /// Verifica se o value é maior que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -229,7 +229,7 @@ public static class IntExtensions
         => value > comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é maior que o value comTodor.
+    /// Verifica se o value é maior que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -238,7 +238,7 @@ public static class IntExtensions
         => value > comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é maior que o value comTodor.
+    /// Verifica se o value é maior que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -247,7 +247,7 @@ public static class IntExtensions
         => value > comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é maior que o value comTodor.
+    /// Verifica se o value é maior que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -256,7 +256,7 @@ public static class IntExtensions
         => value > comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é maior que o value comTodor.
+    /// Verifica se o value é maior que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -265,7 +265,16 @@ public static class IntExtensions
         => value > comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é maior que o value comTodor.
+    /// Verifica se o value é maior ou igual ao value de comparação.
+    /// </summary>
+    /// <Param name="value">value principal.</Param>
+    /// <Param name="comparativeValue">value a ser comparado.</Param>
+    /// <returns>Retorna true se for maior.</returns>
+    public static bool GreaterThanOrEqual( this int value, int comparativeValue )
+        => value >= comparativeValue;
+
+    /// <summary>
+    /// Verifica se o value é maior que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -274,7 +283,7 @@ public static class IntExtensions
         => value > comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -283,7 +292,7 @@ public static class IntExtensions
         => value < comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -292,7 +301,7 @@ public static class IntExtensions
         => value < comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -301,7 +310,7 @@ public static class IntExtensions
         => value < comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -310,7 +319,7 @@ public static class IntExtensions
         => value < comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -319,7 +328,7 @@ public static class IntExtensions
         => value < comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
@@ -328,7 +337,7 @@ public static class IntExtensions
         => value < comparativeValue;
 
     /// <summary>
-    /// Verifica se o value é menor que o value comTodor.
+    /// Verifica se o value é menor que o value de comparação.
     /// </summary>
     /// <Param name="value">value principal.</Param>
     /// <Param name="comparativeValue">value a ser comTodo.</Param>
