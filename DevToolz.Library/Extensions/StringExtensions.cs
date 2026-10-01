@@ -209,7 +209,7 @@ public static class StringExtensions
     /// </summary>
     /// <Param name="value">Valor string.</Param>
     /// <returns>Retorna um value bool.</returns>
-    public static bool ToBoolean( this string value )
+    public static bool ToBoolean( this string? value )
     {
         if ( value.IsNotEmpty() )
         {
